@@ -17,7 +17,7 @@ We're a team of developers working together as part of the [College of Charlesto
 ***
 
 ### About the System
-The 360Snoozing Dual-Alarm AM/FM Clock Radio includes the following features and specifications:
+The 360Snoozin Dual-Alarm AM/FM Clock Radio includes the following features and specifications:
 * Track time with an editable, virtual clock display
 * Toggle between 12 Hour AM/PM or 24 Hour Military time
 * Dual-Alarms allow the user to set two completely individual alarms
