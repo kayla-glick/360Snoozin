@@ -2,3 +2,7 @@
 
 #compiled class files
 *.class
+
+#netbeans auto-generated build files
+*.netbeans_automatic_build
+*.netbeans_update_resources
