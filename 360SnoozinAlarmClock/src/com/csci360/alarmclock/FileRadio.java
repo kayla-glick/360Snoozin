@@ -99,17 +99,21 @@ public class FileRadio extends Thread implements Radio {
   /**
    * Toggles to AM radio input if using FM radio input,
    * and toggles to FM radio input if using AM radio input.
-   * This method changes which file directory to index.
+   * This method changes which file directory to index, and closes the current
+   * player to restart on the new frequency if it is playing.
    */
   @Override
   public void toggleAMFM() {
     this.useAM = !this.useAM;
+    if(this.player != null) {
+      this.player.close();
+    }
   }
 
   /**
    * Tunes the radio up or down (simply goes to the next file in the directory
    * or the previous one to simulate tuning a radio). If there are no more files in the
-   * directory, stay on the current file.
+   * directory, it remains on the current file and does not interfere with playing audio.
    * If a Player object exists, close it to change files if it is playing.
    * @param direction - positive integer to tune up, zero or negative to tune down.
    */
