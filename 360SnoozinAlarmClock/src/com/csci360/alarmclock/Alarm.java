@@ -29,7 +29,7 @@ public class Alarm {
     }
     
     public Instant getTime() {
-        return time;
+        return this.time;
     }
     
     public void setTime(Instant time) {
@@ -38,7 +38,7 @@ public class Alarm {
     }
     
     public Instant getSnoozeTime() {
-        return snoozeTime;
+        return this.snoozeTime;
     }
     
     private void setSnoozeTime(Instant snoozeTime) {
@@ -46,7 +46,7 @@ public class Alarm {
     }
     
     public boolean getIsActive() {
-        return isActive;
+        return this.isActive;
     }
     
     public void setIsActive(boolean isActive) {
@@ -58,7 +58,7 @@ public class Alarm {
     }
     
     public boolean getIsSounding() {
-        return isSounding;
+        return this.isSounding;
     }
     
     public void setIsSounding(boolean isSounding) {
