@@ -1,1 +1,4 @@
 /360SnoozinAlarmClock/nbproject/private/
+
+#compiled class files
+*.class
