@@ -75,7 +75,6 @@ public class Alarm {
     
     public void snooze() {
         this.setSnoozeTime(this.snoozeTime.plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT));
-        this.isSounding = false;
-        this.alarmTimer.cancel();
+        this.setIsSounding(false);
     }
 }
