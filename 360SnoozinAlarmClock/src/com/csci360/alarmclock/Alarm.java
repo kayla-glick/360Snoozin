@@ -6,11 +6,16 @@
 package com.csci360.alarmclock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Timer;
 
 public class Alarm {
-    public final static int SNOOZE_INTERVAL = 10;
-    public final static ChronoUnit SNOOZE_UNIT = ChronoUnit.MINUTES;
-
+    private final static int SNOOZE_INTERVAL = 10;
+    private final static ChronoUnit SNOOZE_UNIT = ChronoUnit.MINUTES;
+    private final static long ALARM_DELAY = 0;
+    private final static long ALARM_INTERVAL = 500;
+    private final static PlayAlarmTask ALARM_TASK = new PlayAlarmTask();
+    
+    private Timer alarmTimer;
     private Instant time;
     private Instant snoozeTime;
     private boolean isActive;
@@ -58,12 +63,19 @@ public class Alarm {
     
     public void setIsSounding(boolean isSounding) {
         this.isSounding = isSounding;
+        
+        if ( isSounding ) {
+            this.alarmTimer = new Timer();
+            this.alarmTimer.scheduleAtFixedRate(Alarm.ALARM_TASK, Alarm.ALARM_DELAY, Alarm.ALARM_INTERVAL);
+        }
+        else {
+            this.alarmTimer.cancel();
+        }
     }
     
     public void snooze() {
-        Instant newSnoozeTime = this.snoozeTime.plus(SNOOZE_INTERVAL, SNOOZE_UNIT);
-        
-        this.setSnoozeTime(newSnoozeTime);
+        this.setSnoozeTime(this.snoozeTime.plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT));
         this.isSounding = false;
+        this.alarmTimer.cancel();
     }
 }
