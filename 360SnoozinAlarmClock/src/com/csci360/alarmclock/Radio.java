@@ -18,7 +18,7 @@ public interface Radio {
   /**
    * Method to stop playing the Radio.
    */
-  public abstract void interrupt();
+  public abstract void stopPlaying();
 
   /**
    * Method to return the name of the current station.

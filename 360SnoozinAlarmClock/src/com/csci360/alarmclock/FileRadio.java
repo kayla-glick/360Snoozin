@@ -74,11 +74,12 @@ public class FileRadio extends Thread implements Radio {
   /**
    * Closes the Player if it has been instantiated. If the Player is playing
    * any audio, it is immediately stopped.
-   * Audio can be turned on again again by calling start() without creating a
-   * new FileRadio object, unlike java.lang.Thread.
+   * Audio can be turned on again again by calling start() without deleting
+   * the current FileRadio object creating a new FileRadio object,
+   * unlike java.lang.Thread.
    */
   @Override
-  public void interrupt() {
+  public void stopPlaying() {
     if(this.player != null) {
       this.interrupted = true;
       this.player.close();
