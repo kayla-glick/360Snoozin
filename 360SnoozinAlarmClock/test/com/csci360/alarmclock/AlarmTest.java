@@ -27,7 +27,7 @@ public class AlarmTest {
     
     @AfterClass
     public static void tearDownClass() {
-        java.lang.System.out.println("Begin AlarmTest");
+        java.lang.System.out.println("End AlarmTest");
     }
     
     @Before
@@ -40,36 +40,60 @@ public class AlarmTest {
     
     @After
     public void tearDown() {
+        alarm = null;
     }
-
+    
+    /**
+     * Method setIsActive(boolean isActive)
+     */
     @Test
-    public void testSetIsActive() {
+    public void testSetIsActiveMaintainsSnoozeTimeIfFalse() {
         alarm.snooze();
         
         Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
                 
-        java.lang.System.out.println("---Testing <setIsActive>");
+        java.lang.System.out.println("---Testing setIsActive(boolean isActive)");
         java.lang.System.out.println("------If isActive == false, should not reset snoozeTime");
         alarm.setIsActive(false);
         assert(alarm.getSnoozeTime().equals(snoozeTime));
+    }
+    
+    @Test
+    public void testSetIsActiveResetsSnoozeTimeIfTrue() {
+        alarm.snooze();
         
+        Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
+        
+        java.lang.System.out.println("---Testing setIsActive(boolean isActive)");
         java.lang.System.out.println("------If isActive == true, should reset snoozeTime");
         alarm.setIsActive(true);
         assert(alarm.getSnoozeTime().equals(alarm.getTime()));
     }
     
+    /**
+     * Method snooze()
+     */
     @Test
-    public void testSnooze() {
+    public void testSnoozeIncrementsSnoozeTime() {
         alarm.setIsSounding(true);
         alarm.snooze();
         
         Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
         
-        java.lang.System.out.println("---Testing <snooze>");
+        java.lang.System.out.println("---Testing snooze()");
         java.lang.System.out.println("------Should increment snoozeTime");      
         assertTrue(alarm.getSnoozeTime().equals(snoozeTime));
+    }
+    
+    @Test
+    public void testSnoozeSetsIsSoundingToFalse() {
+        alarm.setIsSounding(true);
+        alarm.snooze();
         
-        java.lang.System.out.println("------Should set isActive = false");
-        assertFalse(alarm.getIsActive());
+        Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
+        
+        java.lang.System.out.println("---Testing snooze()");
+        java.lang.System.out.println("------Should set isSounding = false");
+        assertFalse(alarm.getIsSounding());
     }
 }

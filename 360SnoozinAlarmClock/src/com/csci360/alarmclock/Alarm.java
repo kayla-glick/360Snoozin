@@ -13,9 +13,9 @@ public class Alarm {
     public final static ChronoUnit SNOOZE_UNIT = ChronoUnit.MINUTES;
     private final static long ALARM_DELAY = 0;
     private final static long ALARM_INTERVAL = 500;
-    private final static PlayAlarmTask ALARM_TASK = new PlayAlarmTask();
     
     private Timer alarmTimer;
+    private PlayAlarmTask alarmTask;
     private Instant time;
     private Instant snoozeTime;
     private boolean isActive;
@@ -26,6 +26,8 @@ public class Alarm {
      * 
      */
     public Alarm() {
+        this.alarmTimer = new Timer();
+        this.alarmTask = new PlayAlarmTask();
         this.time = null;
         this.snoozeTime = null;
         this.isActive = false;
@@ -110,7 +112,7 @@ public class Alarm {
         
         if ( isSounding ) {
             this.alarmTimer = new Timer();
-            this.alarmTimer.scheduleAtFixedRate(Alarm.ALARM_TASK, Alarm.ALARM_DELAY, Alarm.ALARM_INTERVAL);
+            this.alarmTimer.scheduleAtFixedRate(this.alarmTask, Alarm.ALARM_DELAY, Alarm.ALARM_INTERVAL);
         }
         else {
             this.alarmTimer.cancel();
