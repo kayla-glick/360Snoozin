@@ -9,7 +9,10 @@ import java.awt.Toolkit;
 import java.util.TimerTask;
 
 public class PlayAlarmTask extends TimerTask {
-
+    
+    /**
+     * Method that overrides TimerTask's run method and plays the Alarm tone
+     */
     @Override
     public void run() {
         Toolkit.getDefaultToolkit().beep();

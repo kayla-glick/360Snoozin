@@ -13,10 +13,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author kyleglick
- */
 public class AlarmTest {
     protected Alarm alarm;
     
