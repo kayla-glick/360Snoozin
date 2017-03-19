@@ -9,8 +9,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Timer;
 
 public class Alarm {
-    private final static int SNOOZE_INTERVAL = 10;
-    private final static ChronoUnit SNOOZE_UNIT = ChronoUnit.MINUTES;
+    public final static int SNOOZE_INTERVAL = 10;
+    public final static ChronoUnit SNOOZE_UNIT = ChronoUnit.MINUTES;
     private final static long ALARM_DELAY = 0;
     private final static long ALARM_INTERVAL = 500;
     private final static PlayAlarmTask ALARM_TASK = new PlayAlarmTask();
