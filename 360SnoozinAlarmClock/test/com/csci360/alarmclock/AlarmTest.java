@@ -16,6 +16,10 @@ import static org.junit.Assert.*;
 public class AlarmTest {
     protected Alarm alarm;
     
+    public AlarmTest() {
+        
+    }
+    
     @BeforeClass
     public static void setUpClass() {
         java.lang.System.out.println("Begin AlarmTest");
@@ -23,6 +27,7 @@ public class AlarmTest {
     
     @AfterClass
     public static void tearDownClass() {
+        java.lang.System.out.println("Begin AlarmTest");
     }
     
     @Before
