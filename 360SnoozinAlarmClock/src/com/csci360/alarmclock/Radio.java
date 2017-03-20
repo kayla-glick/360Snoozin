@@ -18,20 +18,26 @@ public interface Radio {
   /**
    * Method to stop playing the Radio.
    */
-  public abstract void stopRadio();
+  public void stopRadio();
 
   /**
    * Return the name of the current station.
    * @return String
    */
-  public abstract String getStation();
+  public String getStation();
+
+  /**
+   * Returns whether or not the radio is currently playing.
+   * @return boolean - true if the radio is playing
+   */
+  public boolean isPlaying();
 
   /**
    * Toggles to AM radio input if using FM radio input,
    * and toggles to FM radio input if using AM radio input.
    * @throws java.io.IOException - exception thrown if input could not be loaded.
    */
-  public abstract void toggleAMFM() throws IOException;
+  public void toggleAMFM() throws IOException;
 
   /**
    * Changes the current station.

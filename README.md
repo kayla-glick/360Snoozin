@@ -20,6 +20,8 @@ We're a team of developers working together as part of the [College of Charlesto
 The 360Snoozin Dual-Alarm AM/FM Clock Radio includes the following features and specifications:
 * Track time with an editable, virtual clock display
 * Toggle between 12 Hour AM/PM or 24 Hour Military time
+* Radio interface allows for various ways to play the radio, such as playing .mp3 files like a radio.
 * Dual-Alarms allow the user to set two completely individual alarms
-* Alarms can be modified to use either a default tone, or to play a radio station, selected by the user
 * Snooze timer for those who truly appreciate their snoozin'
+
+*Note: All of the .mp3 files included in this project were downloaded from [Jamendo Music](https://www.jamendo.com/) and were distributed under Creative Commons licenses. More information on their licensing can be found [here](https://www.jamendo.com/legal).*
