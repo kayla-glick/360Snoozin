@@ -113,6 +113,15 @@ public class FileRadio implements Radio {
   }
   
   /**
+   * Returns whether or not the RadioThread is playing or not.
+   * @return boolean - true if the RadioThread is playing
+   */
+  @Override
+  public boolean isPlaying() {
+    return (this.radio == null) ? false : this.radio.getIsPlaying();
+  }
+
+  /**
    * Returns whether or not the current RadioThread is null.
    * Useful for testing/debugging without allowing access to the RadioThread.
    * @return boolean - true if the current RadioThread is null
