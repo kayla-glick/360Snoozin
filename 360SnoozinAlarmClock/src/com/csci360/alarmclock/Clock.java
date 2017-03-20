@@ -6,5 +6,5 @@
 package com.csci360.alarmclock;
 
 public class Clock {
-
+    
 }
