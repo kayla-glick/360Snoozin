@@ -5,6 +5,39 @@
  */
 package com.csci360.alarmclock;
 
-public class Radio {
-    
+import java.io.IOException;
+
+public interface Radio {
+
+  /**
+   * Method to start playing the radio.
+   * @throws java.io.IOException - exception thrown if input could not be loaded.
+   */
+  public void playRadio() throws IOException;
+
+  /**
+   * Method to stop playing the Radio.
+   */
+  public abstract void stopRadio();
+
+  /**
+   * Return the name of the current station.
+   * @return String
+   */
+  public abstract String getStation();
+
+  /**
+   * Toggles to AM radio input if using FM radio input,
+   * and toggles to FM radio input if using AM radio input.
+   * @throws java.io.IOException - exception thrown if input could not be loaded.
+   */
+  public abstract void toggleAMFM() throws IOException;
+
+  /**
+   * Changes the current station.
+   * @param direction - an integer to determine where to tune to.
+   * @throws java.io.IOException - exception thrown if input could not be loaded.
+   */
+  public void tune(int direction) throws IOException;
+
 }
