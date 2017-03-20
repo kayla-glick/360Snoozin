@@ -9,9 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
+
+import java.util.concurrent.TimeUnit; //only used in main
 
 public class FileRadio implements Radio {
 
@@ -146,6 +145,68 @@ public class FileRadio implements Radio {
    */
   private InputStream getCurrentStream() throws IOException {
     return useAM ? new FileInputStream(AM_FILES[currentAMFile]) : new FileInputStream(FM_FILES[currentFMFile]);
+  }
+
+  /**
+   * Main method to demonstrate FileRadio objects typed as Radio objects.
+   * @param args
+   */
+  public static void main(String[] args) {
+    try {
+      Radio radio = new FileRadio();
+      radio.playRadio();
+        java.lang.System.out.println("Playing " + radio.getStation()); //FM0
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.tune(0);
+        java.lang.System.out.println("Still playing " + radio.getStation()); //FM0
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.toggleAMFM();
+        java.lang.System.out.println("Now playing " + radio.getStation()); //AM0
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.tune(1);
+        java.lang.System.out.println("Now playing " + radio.getStation()); //AM1
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.tune(10);
+        java.lang.System.out.println("Now playing " + radio.getStation()); //AM2
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.tune(10);
+        java.lang.System.out.println("Still playing " + radio.getStation()); //AM2
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.stopRadio();
+        java.lang.System.out.print("Turned off the radio for a bit."); //nothing
+      TimeUnit.SECONDS.sleep(1);
+
+      radio.toggleAMFM();
+        java.lang.System.out.print("."); //nothing
+      TimeUnit.SECONDS.sleep(1);
+
+      radio.tune(1);
+        java.lang.System.out.println("."); //nothing
+      TimeUnit.SECONDS.sleep(1);
+
+      radio.playRadio();
+        java.lang.System.out.println("Playing " + radio.getStation()); //FM1
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.tune(0);
+        java.lang.System.out.println("Now playing " + radio.getStation()); //FM0
+      TimeUnit.SECONDS.sleep(5);
+
+      radio.stopRadio();
+        java.lang.System.out.println("Done!");
+    }
+    catch(IOException e) {
+      java.lang.System.out.println(e + ": There was an error loading the input.");
+    }
+    catch(InterruptedException e) {
+      java.lang.System.out.println(e + ": There was probably an error with sleep.");
+    }
   }
 
 }
