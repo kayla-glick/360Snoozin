@@ -1,5 +1,5 @@
-/360SnoozinAlarmClock/nbproject/private/
-/360SnoozinAlarmClock/build/
+/360SnoozinAlarmClock/nbproject/private/*
+/360SnoozinAlarmClock/build/*
 
 #compiled class files
 *.class
