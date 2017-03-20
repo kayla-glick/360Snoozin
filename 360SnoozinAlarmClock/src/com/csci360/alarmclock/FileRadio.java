@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit; //only used in main
 
 public class FileRadio implements Radio {
 
-  private static final String FILE_DIRECTORY = "src/com/csci360/alarmclock/AudioFiles/";
+  private static final String FILE_DIRECTORY = "src/AudioFiles/";
   private static final File[] AM_FILES = new File(FILE_DIRECTORY + "AM/").listFiles();
   private static final File[] FM_FILES = new File(FILE_DIRECTORY + "FM/").listFiles();
 

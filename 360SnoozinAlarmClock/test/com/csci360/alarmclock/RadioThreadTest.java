@@ -38,7 +38,7 @@ public class RadioThreadTest {
   @Before
   public void setUp() {
     try {
-      File someMP3 = new File("src/com/csci360/alarmclock/AudioFiles/FM").listFiles()[0];
+      File someMP3 = new File("src/AudioFiles/FM").listFiles()[0];
       this.radioThreadInstance = new RadioThread(new FileInputStream(someMP3));
     }
     catch(IOException e) {
