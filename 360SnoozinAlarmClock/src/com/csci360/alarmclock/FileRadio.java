@@ -156,43 +156,36 @@ public class FileRadio implements Radio {
       Radio radio = new FileRadio();
       radio.playRadio();
         java.lang.System.out.println("Playing " + radio.getStation()); //FM0
-      TimeUnit.SECONDS.sleep(5);
+      TimeUnit.SECONDS.sleep(3);
 
       radio.tune(0);
         java.lang.System.out.println("Still playing " + radio.getStation()); //FM0
-      TimeUnit.SECONDS.sleep(5);
+      TimeUnit.SECONDS.sleep(3);
 
       radio.toggleAMFM();
         java.lang.System.out.println("Now playing " + radio.getStation()); //AM0
-      TimeUnit.SECONDS.sleep(5);
+      TimeUnit.SECONDS.sleep(3);
 
       radio.tune(1);
-        java.lang.System.out.println("Now playing " + radio.getStation()); //AM1
-      TimeUnit.SECONDS.sleep(5);
-
       radio.tune(10);
         java.lang.System.out.println("Now playing " + radio.getStation()); //AM2
-      TimeUnit.SECONDS.sleep(5);
-
-      radio.tune(10);
-        java.lang.System.out.println("Still playing " + radio.getStation()); //AM2
-      TimeUnit.SECONDS.sleep(5);
+      TimeUnit.SECONDS.sleep(3);
 
       radio.stopRadio();
         java.lang.System.out.print("Turned off the radio for a bit."); //nothing
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.SECONDS.sleep(2);
 
       radio.toggleAMFM();
         java.lang.System.out.print("."); //nothing
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.SECONDS.sleep(2);
 
       radio.tune(1);
         java.lang.System.out.println("."); //nothing
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.SECONDS.sleep(2);
 
       radio.playRadio();
         java.lang.System.out.println("Playing " + radio.getStation()); //FM1
-      TimeUnit.SECONDS.sleep(5);
+      TimeUnit.SECONDS.sleep(3);
 
       radio.tune(0);
         java.lang.System.out.println("Now playing " + radio.getStation()); //FM0
