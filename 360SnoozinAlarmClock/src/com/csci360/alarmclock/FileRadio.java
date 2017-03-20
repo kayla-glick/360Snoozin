@@ -9,116 +9,88 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
-public class FileRadio extends Thread implements Radio {
+public class FileRadio implements Radio {
 
-  private static final Radio INSTANCE = new FileRadio();
   private static final String FILE_DIRECTORY = "src/com/csci360/alarmclock/AudioFiles/";
   private static final File[] AM_FILES = new File(FILE_DIRECTORY + "AM/").listFiles();
   private static final File[] FM_FILES = new File(FILE_DIRECTORY + "FM/").listFiles();
 
   private int currentAMFile, currentFMFile;
   private boolean useAM;
-  private boolean unstarted;
-  private boolean interrupted;
-  private Player player;
+  private RadioThread radio;
 
   /**
-   * Private constructor for FileRadio objects following the singleton pattern.s
+   * Constructor for FileRadio objects.
+   * AM_FILES and FM_FILES are indexed at 0 on instantiation and begins on FM
+   * radio files.
    */
-  private FileRadio() {
-    super();
-    
-    interrupted = false;
-    this.unstarted = true;
+  public FileRadio() {
     this.useAM = false;
-    currentAMFile = 0; currentFMFile = 0;
+    currentAMFile = 0;
+    currentFMFile = 0;
   }
 
   /**
-   * Returns an instance of FileRadio as a Radio object following the Singleton pattern.
-   * This also ensures that the FileRadio cannot be terminated or destroyed
-   * during the duration of an application.
-   * @return Radio - the only FileRadio object
-   */
-  public static Radio getInstance() {
-    return INSTANCE;
-  }
-
-  /**
-   * Plays the current music file. Unlike java.lang.Thread, start()
-   * may be called multiple times. If called more than once, only the current audio file
-   * will be played.
+   * Plays the current music file. To do this, radio is assigned a new RadioThread
+   * with the current AM/FM InputStream, and plays the InputStream in the RadioThread.
+   * @throws java.io.IOException - There was a problem loading the InputStream from a File.
    */
   @Override
-  public void start() {
-    if(this.unstarted) {
-      this.unstarted = false;
-      interrupted = false;
-      super.start();
-    } else if(interrupted) {
-      this.playCurrentAudioFile();
-    }
+  public void playRadio() throws IOException {
+    this.resetRadio(true);
   }
 
   /**
-   * This is called by the superclass when it is started.
+   * Interrupts the current RadioThread, and sets the attribute to null to
+   * delete the RadioThread.
    */
   @Override
-  public void run() {
-    this.playCurrentAudioFile();
-  }
-
-  /**
-   * Closes the Player if it has been instantiated. If the Player is playing
-   * any audio, it is immediately stopped.
-   * Audio can be turned on again again by calling start() without deleting
-   * the current FileRadio object creating a new FileRadio object,
-   * unlike java.lang.Thread.
-   */
-  @Override
-  public void stopPlaying() {
-    if(this.player != null) {
-      this.interrupted = true;
-      this.player.close();
+  public void stopRadio() {
+    if(this.radio != null) {
+      this.radio.interrupt();
+      this.radio = null;
     }
   }
 
   /**
    * Returns the name of the current InputStream (the current "station").
-   * In this case, it is the name of the file associated with the current InputStream.
+   * In this case, it is the name of the file associated with the current InputStream
+   * without its extention.
    * @return String
    */
   @Override
   public String getStation() {
-    return useAM ? AM_FILES[currentAMFile].getName() : FM_FILES[currentFMFile].getName();
+    String nameWithExtention = useAM ? AM_FILES[currentAMFile].getName() : FM_FILES[currentFMFile].getName();
+    return nameWithExtention.substring(0, nameWithExtention.lastIndexOf("."));
   }
 
   /**
    * Toggles to AM radio input if using FM radio input,
    * and toggles to FM radio input if using AM radio input.
-   * This method changes which file directory to index, and closes the current
-   * player to restart on the new frequency if it is playing.
+   * This method changes which file directory to index, and resets the RadioThread.
+   * @throws java.io.IOException - There was a problem loading the InputStream from a File.
    */
   @Override
-  public void toggleAMFM() {
+  public void toggleAMFM() throws IOException {
     this.useAM = !this.useAM;
-    if(this.player != null) {
-      this.player.close();
-    }
+    this.resetRadio(false);
   }
 
   /**
    * Tunes the radio up or down (simply goes to the next file in the directory
    * or the previous one to simulate tuning a radio). If there are no more files in the
-   * directory, it remains on the current file and does not interfere with playing audio.
-   * If a Player object exists, close it to change files if it is playing.
+   * directory, it remains on the current file and does not interfere with
+   * the current RadioThread.
+   * If the new index is valid, it resets the RadioThread.
    * @param direction - positive integer to tune up, zero or negative to tune down.
+   * @throws java.io.IOException - There was a problem loading the InputStream from a File.
    */
   @Override
-  public void tune(int direction) {
+  public void tune(int direction) throws IOException {
     int n = (direction > 0) ? 1 : -1;
     int newFrequency = useAM ? currentAMFile + n : currentFMFile + n;
     File[] currentFileSystem = useAM ? AM_FILES : FM_FILES;
@@ -128,36 +100,49 @@ public class FileRadio extends Thread implements Radio {
       } else {
         this.currentFMFile = newFrequency;
       }
-      if(this.player != null)
-        this.player.close();
+      this.resetRadio(false);
     }
   }
 
   /**
-   * Plays the current Audio File based on the current File[] index
-   * (currentAMFile or currentFMFile).
-   * The file plays on a loop unless this thread is interrupted.
+   * Getter for useAM. Returns whether or not this FileRadio is using AM or FM
+   * radio files.
+   * @return boolean - true is using AM files, false for FM files.
    */
-  private void playCurrentAudioFile() {
-    try {
-      while(!this.interrupted) {
-        this.player = new Player(this.getCurrentStream());
-        this.player.play();
-      }
-    }
-    catch(IOException e) {
-      java.lang.System.out.println("There was a problem in loading the current station.");
-    }
-    catch(JavaLayerException e) {
-      java.lang.System.out.println("There was a problem in playing the current station.");
-    }
+  public boolean getUseAM() {
+    return this.useAM;
+  }
+  
+  /**
+   * Returns whether or not the current RadioThread is null.
+   * Useful for testing/debugging without allowing access to the RadioThread.
+   * @return boolean - true if the current RadioThread is null
+   */
+  public boolean isRadioThreadNull() {
+    return this.radio == null;
   }
 
   /**
-   * Returns the InputStream for the current AM/FM file to play.
-   * This method can throw an IOException if there is some problem loading a file.
+   * Resets the current RadioThread by interrupting it, and creating a new one.
+   * To force the new RadioThread to play, set forceStart to true (useful in
+   * reducing duplicate code).
+   * @throws java.io.IOException - There was a problem loading the InputStream from a File.
+   */
+  private void resetRadio(boolean forceStart) throws IOException{
+    boolean radioIsPlaying;
+    radioIsPlaying = false;
+    if(this.radio != null) {
+      radioIsPlaying = this.radio.getIsPlaying();
+      this.stopRadio();
+    }
+    this.radio = new RadioThread(this.getCurrentStream());
+    if(radioIsPlaying || forceStart) this.radio.start();
+  }
+
+  /**
+   * Returns the InputStream based on useAM and currentAMFile or currentFMFile.
    * @return InputStream
-   * @throws java.io.IOException
+   * @throws java.io.IOException - There was a problem loading the InputStream from a File.
    */
   private InputStream getCurrentStream() throws IOException {
     return useAM ? new FileInputStream(AM_FILES[currentAMFile]) : new FileInputStream(FM_FILES[currentFMFile]);
