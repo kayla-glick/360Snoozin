@@ -98,6 +98,21 @@ public class SystemTest {
     }
     
     /**
+     * Method snoozeAlarms()
+     */
+    @Test
+    public void testSnoozeAlarmsSnoozesAlarms() {  
+        java.lang.System.out.println("---Testing snoozeAlarms()");
+        java.lang.System.out.println("------Should snooze alarms which are sounding");
+        String time = "2000-01-01T12:30:00Z";
+        Alarm alarm = system.clock.getAlarms()[0];
+        alarm.setTime(Instant.parse(time));
+        alarm.setIsSounding(true);
+        system.snoozeAlarms();
+        assertTrue(system.clock.getAlarms()[0].getSnoozeTime().equals(Instant.parse(time).plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT)));
+    }
+    
+    /**
      * Method playRadio()
      */
     @Test
