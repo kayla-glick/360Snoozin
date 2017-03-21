@@ -4,11 +4,10 @@
  * and open the template in the editor.
  */
 package com.csci360.alarmclock;
-<<<<<<< Updated upstream
+
 
 import java.time.Instant;
-=======
->>>>>>> Stashed changes
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
