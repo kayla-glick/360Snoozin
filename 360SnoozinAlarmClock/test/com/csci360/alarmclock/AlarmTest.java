@@ -5,9 +5,7 @@
  */
 package com.csci360.alarmclock;
 
-
 import java.time.Instant;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,7 +20,6 @@ public class AlarmTest {
         
     }
     
-
     @BeforeClass
     public static void setUpClass() {
         java.lang.System.out.println("Begin AlarmTest");
@@ -71,7 +68,6 @@ public class AlarmTest {
         java.lang.System.out.println("------If isActive == true, should reset snoozeTime");
         alarm.setIsActive(true);
         assert(alarm.getSnoozeTime().equals(alarm.getTime()));
-
     }
     
     /**
