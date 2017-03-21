@@ -15,10 +15,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author sam_word
- */
 public class RadioThreadTest {
 
   protected RadioThread radioThreadInstance;
@@ -57,7 +53,8 @@ public class RadioThreadTest {
    */
   @Test
   public void testStart() {
-    java.lang.System.out.println("start");
+    java.lang.System.out.println("--Testing start()");
+    java.lang.System.out.println("----Should play radio");
     radioThreadInstance.start();
     assertTrue(radioThreadInstance.getIsPlaying());
   }
@@ -68,10 +65,10 @@ public class RadioThreadTest {
    */
   @Test
   public void testInterrupt() {
-    java.lang.System.out.println("interrupt");
+    java.lang.System.out.println("--Testing interrupt()");
+    java.lang.System.out.println("----Should turn off radio");
     radioThreadInstance.start();
     radioThreadInstance.interrupt();
     assertFalse(radioThreadInstance.getIsPlaying());
   }
-  
 }

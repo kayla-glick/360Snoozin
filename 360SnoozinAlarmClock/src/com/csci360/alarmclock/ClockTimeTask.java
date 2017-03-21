@@ -5,27 +5,27 @@
  */
 package com.csci360.alarmclock;
 
-
-/**
- *
- * @author Giff
- */
-
 import java.time.temporal.ChronoUnit;
 import java.util.TimerTask;
-import java.time.Instant;
 
 public class ClockTimeTask extends TimerTask{
-    Clock clock;
     
+    private Clock clock;
+    
+    /**
+     * Constructor
+     * 
+     * @param clock The clock to increment
+     */
     public ClockTimeTask(Clock clock){
         this.clock = clock;
     }
-    
-    
+
+    /**
+     * Method to update Clock's time
+     */
     @Override
     public void run(){
         clock.setTime(clock.getTime().plus(1, ChronoUnit.MINUTES));
     }
-    
 }
