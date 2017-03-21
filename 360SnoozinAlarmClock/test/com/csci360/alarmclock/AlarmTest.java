@@ -72,7 +72,7 @@ public class AlarmTest {
         alarm.setIsActive(true);
         assert(alarm.getSnoozeTime().equals(alarm.getTime()));
 
- 
+    }
     
     /**
      * Method snooze()
