@@ -9,11 +9,24 @@ import java.util.TimerTask;
 
 public class PlayAlarmTask extends TimerTask {
     
+    private Alarm alarm;
+    
+    /**
+     * Constructor
+     * 
+     * @param alarm The alarm being played
+     */
+    public PlayAlarmTask(Alarm alarm) {
+        this.alarm = alarm;
+    }
+    
     /**
      * Method that overrides TimerTask's run method and plays the Alarm tone
      */
     @Override
     public void run() {
-        Toolkit.getDefaultToolkit().beep();
+        if ( this.alarm.getIsSounding() ) {
+            Toolkit.getDefaultToolkit().beep();
+        }
     }
 }

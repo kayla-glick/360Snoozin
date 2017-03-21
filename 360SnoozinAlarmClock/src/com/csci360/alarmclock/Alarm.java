@@ -27,12 +27,14 @@ public class Alarm {
      * 
      */
     public Alarm() {
-        this.alarmTimer = new Timer();
-        this.alarmTask = new PlayAlarmTask();
         this.time = null;
         this.snoozeTime = null;
         this.isActive = false;
         this.isSounding = false;
+        this.alarmTimer = new Timer();
+        this.alarmTask = new PlayAlarmTask(this);
+        
+        this.alarmTimer.scheduleAtFixedRate(this.alarmTask, Alarm.ALARM_DELAY, Alarm.ALARM_INTERVAL);
     }
     
     /**
@@ -110,14 +112,6 @@ public class Alarm {
      */
     public void setIsSounding(boolean isSounding) {
         this.isSounding = isSounding;
-        
-        if ( isSounding ) {
-            this.alarmTimer = new Timer();
-            this.alarmTimer.scheduleAtFixedRate(this.alarmTask, Alarm.ALARM_DELAY, Alarm.ALARM_INTERVAL);
-        }
-        else {
-            this.alarmTimer.cancel();
-        }
     }
     
     /**
