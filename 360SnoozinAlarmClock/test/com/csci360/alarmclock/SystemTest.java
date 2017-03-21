@@ -13,15 +13,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author kyleglick
- */
 public class SystemTest {
+    
     protected System system;
     
-    public SystemTest() {
-    }
+    public SystemTest() {}
     
     @BeforeClass
     public static void setUpClass() {
@@ -48,12 +44,10 @@ public class SystemTest {
      */
     @Test
     public void testSetClockTimeSetsClockTime() {
-        String time = "2000-01-01T12:30:00Z";
-                
-        system.setClockTime(time);
-        
         java.lang.System.out.println("---Testing setClockTime(String time)");
         java.lang.System.out.println("------Should set the clock's time");
+        String time = "2000-01-01T12:30:00Z";
+        system.setClockTime(time);
         assertTrue(system.clock.getTime().equals(Instant.parse(time)));
     }
     
@@ -61,12 +55,11 @@ public class SystemTest {
      * Method toggleTimeFormat()
      */
     @Test
-    public void testToggleTimeFormatSetsClockTimeFormat() {        
-        system.toggleTimeFormat();
-        
+    public void testToggleTimeFormatSetsClockTimeFormat() {                
         java.lang.System.out.println("---Testing toggleTimeFormat()");
         java.lang.System.out.println("------Should set the clock's time format");
-        assertFalse(system.clock.getUse24HourFormat());
+        system.toggleTimeFormat();
+        assertTrue(system.clock.getUse24HourFormat());
     }
     
     /**
@@ -74,12 +67,10 @@ public class SystemTest {
      */
     @Test
     public void testSetAlarmTimeSetsAlarmTime() {
-        String time = "2000-01-01T12:30:00Z";
-                
-        system.setAlarmTime(time, 1);
-        
         java.lang.System.out.println("---Testing setAlarmTime(String time, int n)");
         java.lang.System.out.println("------Should set the corresponding alarm's time");
+        String time = "2000-01-01T12:30:00Z";
+        system.setAlarmTime(time, 1);
         assertTrue(system.clock.getAlarms()[0].getTime().equals(Instant.parse(time)));
     }
     
@@ -88,10 +79,9 @@ public class SystemTest {
      */
     @Test
     public void testEnableAlarmEnablesAlarm() {
-        system.enableAlarm(1);
-        
         java.lang.System.out.println("---Testing enableAlarm(int n)");
         java.lang.System.out.println("------Should enable the corresponding alarm");
+        system.enableAlarm(1);
         assertTrue(system.clock.getAlarms()[0].getIsActive());
     }
     
@@ -100,11 +90,10 @@ public class SystemTest {
      */
     @Test
     public void testDisableAlarmDisablesAlarm() {
-        system.enableAlarm(1);
-        system.disableAlarm(1);
-        
         java.lang.System.out.println("---Testing disableAlarm(int n)");
         java.lang.System.out.println("------Should disable the corresponding alarm");
+        system.enableAlarm(1);
+        system.disableAlarm(1);
         assertFalse(system.clock.getAlarms()[0].getIsActive());
     }
     
@@ -113,14 +102,12 @@ public class SystemTest {
      */
     @Test
     public void testSoundAlarmsSetsIsSoundingTrueIfTimeMatches() {
+        java.lang.System.out.println("---Testing soundAlarms()");
+        java.lang.System.out.println("------Should sound alarms with correct times");
         String time = "2000-01-01T12:30:00Z";
-        
         system.setClockTime(time);
         system.setAlarmTime(time, 1);
         system.soundAlarms();
-        
-        java.lang.System.out.println("---Testing soundAlarms()");
-        java.lang.System.out.println("------Should sound alarms with correct times");
         assertTrue(system.clock.getAlarms()[0].getIsSounding());
     }
     
@@ -128,16 +115,14 @@ public class SystemTest {
      * Method snoozeAlarms()
      */
     @Test
-    public void testSnoozeAlarmsSnoozesAlarms() {
+    public void testSnoozeAlarmsSnoozesAlarms() {  
+        java.lang.System.out.println("---Testing snoozeAlarms()");
+        java.lang.System.out.println("------Should snooze alarms which are sounding");
         String time = "2000-01-01T12:30:00Z";
-        
         system.setClockTime(time);
         system.setAlarmTime(time, 1);
         system.soundAlarms();
         system.snoozeAlarms();
-        
-        java.lang.System.out.println("---Testing snoozeAlarms()");
-        java.lang.System.out.println("------Should snooze alarms which are sounding");
         assertTrue(system.clock.getAlarms()[0].getSnoozeTime().equals(Instant.parse(time).plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT)));
     }
     
@@ -146,10 +131,9 @@ public class SystemTest {
      */
     @Test
     public void testPlayRadioPlaysRadio() {
-        system.playRadio();
-        
         java.lang.System.out.println("---Testing playRadio()");
         java.lang.System.out.println("------Should play the radio");
+        system.playRadio();
         assertTrue(system.radio.isPlaying());
     }
     
@@ -158,11 +142,10 @@ public class SystemTest {
      */
     @Test
     public void testTurnOffRadioTurnsOffRadio() {
-        system.playRadio();
-        system.turnOffRadio();
-        
         java.lang.System.out.println("---Testing turnOffRadio()");
         java.lang.System.out.println("------Should turn off the radio");
+        system.playRadio();
+        system.turnOffRadio();
         assertFalse(system.radio.isPlaying());
     }
     
@@ -170,11 +153,10 @@ public class SystemTest {
      * Method toggleAMFM()
      */
     @Test
-    public void testToggleAMFMTogglesRadioAMFM() {
-        system.toggleAMFM();
-        
+    public void testToggleAMFMTogglesRadioAMFM() { 
         java.lang.System.out.println("---Testing toggleAMFM()");
         java.lang.System.out.println("------Should toggle the radio's AM/FM signal");
+        system.toggleAMFM();
         assertTrue(system.radio.getUseAM());
     }
     
@@ -182,12 +164,11 @@ public class SystemTest {
      * Method changeStation(int direction)
      */
     @Test
-    public void testChangeStationChangesStation() {
-        system.playRadio();
-        system.changeStation(1);        
-        
+    public void testChangeStationChangesStation() {  
         java.lang.System.out.println("---Testing changeStation(int direction)");
         java.lang.System.out.println("------Should change the radio station in the corresponding direction");
+        system.playRadio();
+        system.changeStation(1);
         assertTrue(system.radio.getStation().contains("Secret"));
     }
 }

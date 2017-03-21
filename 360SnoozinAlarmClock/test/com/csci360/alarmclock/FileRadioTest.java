@@ -47,7 +47,8 @@ public class FileRadioTest {
    */
   @Test
   public void testPlayRadio() throws IOException {
-    java.lang.System.out.println("playRadio");
+    java.lang.System.out.println("--Testing playRadio()");
+    java.lang.System.out.println("----Should create a RadioThread");
     fileRadioInstance.playRadio();
     assertFalse(fileRadioInstance.isRadioThreadNull());
   }
@@ -59,7 +60,8 @@ public class FileRadioTest {
    */
   @Test
   public void testStopRadio() throws IOException {
-    java.lang.System.out.println("stopRadio");
+    java.lang.System.out.println("--Testing stopRadio()");
+    java.lang.System.out.println("----Should destroy the RadioThread");
     fileRadioInstance.playRadio();
     fileRadioInstance.stopRadio();
     assertTrue(fileRadioInstance.isRadioThreadNull());
@@ -71,7 +73,8 @@ public class FileRadioTest {
    */
   @Test
   public void testGetStation() {
-    java.lang.System.out.println("getStation");
+    java.lang.System.out.println("--Testing getStation()");
+    java.lang.System.out.println("----Should return current station");
     String expectedName = "FM - Red Cat by The Piano Lady";
     String actualName = fileRadioInstance.getStation();
     assertEquals("Expected: "+expectedName+"\nGot: "+actualName,
@@ -85,7 +88,8 @@ public class FileRadioTest {
    */
   @Test
   public void testToggleAMFM() throws IOException {
-    java.lang.System.out.println("toggleAMFM - toggles attribute");
+    java.lang.System.out.println("--Testing toggleAMFM()");
+    java.lang.System.out.println("----Should toggle useAM attribute");
     boolean initialVal = fileRadioInstance.getUseAM();
     fileRadioInstance.toggleAMFM();
     boolean resultVal = fileRadioInstance.getUseAM();
@@ -100,7 +104,8 @@ public class FileRadioTest {
    */
   @Test
   public void testToggleAMFMPlayingRadio() throws IOException {
-    java.lang.System.out.println("toggleAMFM - resets and plays radio");
+    java.lang.System.out.println("--Testing playRadio()");
+    java.lang.System.out.println("----Should reset and play radio if radio playing");
     fileRadioInstance.playRadio();
     fileRadioInstance.toggleAMFM();
     int expectedThreads = 2;
@@ -116,7 +121,8 @@ public class FileRadioTest {
    */
   @Test
   public void testToggleAMFMNoRadio() throws IOException {
-    java.lang.System.out.println("toggleAMFM - resets but does not play radio");
+    java.lang.System.out.println("--Testing playRadio()");
+    java.lang.System.out.println("----Should reset but not play radio if radio off");
     fileRadioInstance.toggleAMFM();
     int expectedThreads = 1;
     int actualNumThreads = java.lang.Thread.activeCount();
@@ -130,7 +136,8 @@ public class FileRadioTest {
    */
   @Test
   public void testTunePlayingRadio() throws IOException {
-    java.lang.System.out.println("tune - resets and plays radio");
+    java.lang.System.out.println("--Testing tune(int direction)");
+    java.lang.System.out.println("----Should reset and play radio if radio playing");
     fileRadioInstance.playRadio();
     fileRadioInstance.tune(1);
     int expectedThreads = 2;
@@ -145,7 +152,8 @@ public class FileRadioTest {
    */
   @Test
   public void testTuneNoRadio() throws IOException {
-    java.lang.System.out.println("tune - resets but does not play radio");
+    java.lang.System.out.println("--Testing tune(int direction)");
+    java.lang.System.out.println("----Should reset but not play radio if radio off");
     fileRadioInstance.tune(1);
     int expectedThreads = 1;
     int actualNumThreads = java.lang.Thread.activeCount();
@@ -161,7 +169,8 @@ public class FileRadioTest {
    */
   @Test
   public void testTuneLessThan0() throws IOException {
-    java.lang.System.out.println("tune - less than 0 index");
+    java.lang.System.out.println("--Testing tune(int direction)");
+    java.lang.System.out.println("----Should do nothing if index < 0");
     fileRadioInstance.tune(-10000000);
   }
 
@@ -174,8 +183,8 @@ public class FileRadioTest {
    */
   @Test
   public void testTuneGreaterThanLength() throws IOException {
-    java.lang.System.out.println("tune - greater than number of files");
+    java.lang.System.out.println("--Testing tune(int direction)");
+    java.lang.System.out.println("----Should do nothing if index > length");
     fileRadioInstance.tune(10000000);
   }
-
 }

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.csci360.alarmclock;
-
 import java.awt.Toolkit;
 import java.util.TimerTask;
 
