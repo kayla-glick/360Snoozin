@@ -27,5 +27,11 @@ public class ClockTimeTask extends TimerTask{
     @Override
     public void run(){
         clock.setTime(clock.getTime().plus(1, ChronoUnit.MINUTES));
+        
+        for ( Alarm alarm : clock.getAlarms() ) {
+            if ( alarm.getTime() != null && clock.getTime().equals(alarm.getTime()) ) {
+                alarm.setIsSounding(true);
+            }
+        }
     }
 }

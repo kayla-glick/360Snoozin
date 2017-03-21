@@ -53,5 +53,17 @@ public class ClockTimeTaskTest {
         Instant time = clock.getTime();
         task.run();
         assertTrue(clock.getTime().equals(time.plus(1, ChronoUnit.MINUTES)));
+    }
+    
+    @Test
+    public void testRunSoundAlarmIfTimeEqual() { 
+        java.lang.System.out.println("---Testing run()");
+        java.lang.System.out.println("------Should sound alarm if times equivalent");
+        Instant time = Instant.parse("2000-01-01T12:30:00Z");
+        clock.setTime(time);
+        clock.getAlarms()[0].setTime(time.plus(1, ChronoUnit.MINUTES));
+        task.run();
+        assertTrue(clock.getAlarms()[0].getIsSounding());
     }   
+    
 }
