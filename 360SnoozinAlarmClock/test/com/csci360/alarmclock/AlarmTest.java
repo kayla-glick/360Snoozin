@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 package com.csci360.alarmclock;
+<<<<<<< Updated upstream
 
 import java.time.Instant;
+=======
+>>>>>>> Stashed changes
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,6 +23,7 @@ public class AlarmTest {
         
     }
     
+<<<<<<< Updated upstream
     @BeforeClass
     public static void setUpClass() {
         java.lang.System.out.println("Begin AlarmTest");
@@ -68,6 +72,13 @@ public class AlarmTest {
         java.lang.System.out.println("------If isActive == true, should reset snoozeTime");
         alarm.setIsActive(true);
         assert(alarm.getSnoozeTime().equals(alarm.getTime()));
+=======
+    @Test
+    public void testClockConstructor() {
+        // TODO review the generated test code and remove the default call to fail.
+        Clock testClock = new Clock();
+        assertEquals(testClock.getAlarms(), );
+>>>>>>> Stashed changes
     }
     
     /**
