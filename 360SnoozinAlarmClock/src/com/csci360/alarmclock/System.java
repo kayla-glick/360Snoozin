@@ -65,20 +65,6 @@ public class System {
     }
     
     /**
-     * Method to play play alarms if their times match the clock time
-     */
-    public void soundAlarms() {
-        Instant clockTime = this.clock.getTime();
-        Alarm[] alarms = this.clock.getAlarms();
-        
-        for ( Alarm alarm : alarms ) {
-            if ( alarm.getTime() != null && alarm.getTime().equals(clockTime) ) {
-                alarm.setIsSounding(true);
-            }
-        }
-    }
-    
-    /**
      * Method to snooze any alarms which are currently playing
      */
     public void snoozeAlarms() {

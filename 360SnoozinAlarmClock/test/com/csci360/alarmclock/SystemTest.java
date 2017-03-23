@@ -98,20 +98,6 @@ public class SystemTest {
     }
     
     /**
-     * Method soundAlarms()
-     */
-    @Test
-    public void testSoundAlarmsSetsIsSoundingTrueIfTimeMatches() {
-        java.lang.System.out.println("---Testing soundAlarms()");
-        java.lang.System.out.println("------Should sound alarms with correct times");
-        String time = "2000-01-01T12:30:00Z";
-        system.setClockTime(time);
-        system.setAlarmTime(time, 1);
-        system.soundAlarms();
-        assertTrue(system.clock.getAlarms()[0].getIsSounding());
-    }
-    
-    /**
      * Method snoozeAlarms()
      */
     @Test
@@ -119,9 +105,9 @@ public class SystemTest {
         java.lang.System.out.println("---Testing snoozeAlarms()");
         java.lang.System.out.println("------Should snooze alarms which are sounding");
         String time = "2000-01-01T12:30:00Z";
-        system.setClockTime(time);
-        system.setAlarmTime(time, 1);
-        system.soundAlarms();
+        Alarm alarm = system.clock.getAlarms()[0];
+        alarm.setTime(Instant.parse(time));
+        alarm.setIsSounding(true);
         system.snoozeAlarms();
         assertTrue(system.clock.getAlarms()[0].getSnoozeTime().equals(Instant.parse(time).plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT)));
     }
