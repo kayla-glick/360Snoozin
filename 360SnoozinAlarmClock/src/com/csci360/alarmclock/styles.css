@@ -16,38 +16,23 @@ body{
     height: 100%;
     max-height: 100%;
 }
+
 #container,
 #inner-content {
     height: 100%;
     width: 100%;
 }
+
 #alarm1-container,
 #alarm2-container,
 #clock-container {
     height: 55%;
 }
-#clock-container #clock-time-container {
-    margin-top: 10%;
-    margin-bottom: 0px;
-    height: 50%;
-    position: relative;
-}
-#clock-container #clock-time-display {
-    font-size: 108px;
-    font-family: sans-serif;
-}
-#clock-container #clock-am-pm-display {
-    vertical-align: bottom;
-    position: absolute;
-    right: 19px;
-    bottom: 19px;
-}
-#clock-container #clock-buttons-container {
-    margin-top: 5%;
-}
+
 #radio-container {
     height: 35%;
 }
+
 .no-padding {
     padding: 0;
 }

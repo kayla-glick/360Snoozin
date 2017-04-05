@@ -1,0 +1,24 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+#clock-container #clock-time-container {
+    margin-top: 10%;
+    margin-bottom: 0px;
+    height: 50%;
+    position: relative;
+}
+#clock-container #clock-time-display {
+    font-size: 108px;
+    font-weight: normal;
+}
+#clock-container #clock-am-pm-display {
+    vertical-align: bottom;
+    position: absolute;
+    right: 19px;
+    bottom: 19px;
+}
+#clock-container #clock-buttons-container {
+    margin-top: 5%;
+}
