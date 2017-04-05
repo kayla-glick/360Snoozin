@@ -1,12 +1,8 @@
 /360SnoozinAlarmClock/nbproject/private/*
 /360SnoozinAlarmClock/nbproject/configs/*
-/360SnoozinAlarmClock/nbproject/build-impl.xml
-/360SnoozinAlarmClock/nbproject/jfx-impl.xml
-/360SnoozinAlarmClock/nbproject/project.xml
 /360SnoozinAlarmClock/nbproject/genfiles.properties
 /360SnoozinAlarmClock/build/*
 /360SnoozinAlarmClock/dist/*
-/360SnoozinAlarmClock/build.xml
 
 #compiled class files
 *.class
