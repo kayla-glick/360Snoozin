@@ -24,15 +24,14 @@ public class Main extends Application {
     
     private static final System system = new System();
     
-    // DOM Elements for Controller Methods
-    // Clock Elements
+    // Clock DOM Elements
     private static Element clockTimeDisplay;
     private static Element clockAMPMDisplay;
     private static Element clockHourButton;
     private static Element toggleTimeFormatButton;
     private static Element clockMinuteButton;
     
-    // Alarm1 Elements
+    // Alarm1 DOM Elements
     private static Element alarm1StateButton;
     private static Element alarm1TimeDisplay;
     private static Element alarm1AMPMDisplay;
@@ -40,7 +39,7 @@ public class Main extends Application {
     private static Element alarm1MinuteButton;
     private static Element alarm1SnoozeButton;
     
-    // Alarm2 Elements
+    // Alarm2 DOM Elements
     private static Element alarm2StateButton;
     private static Element alarm2TimeDisplay;
     private static Element alarm2AMPMDisplay;
