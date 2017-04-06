@@ -94,6 +94,8 @@ public class Main extends Application {
 
         Scene scene = new Scene(browser, 1080, 720);
         primaryStage.setTitle(APP_TITLE);
+        primaryStage.setMinHeight(720);
+        primaryStage.setMinWidth(1080);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -112,20 +114,20 @@ public class Main extends Application {
         clockMinuteButton = dom.getElementById("clock-minute-button");
         
         // Alarm1 Elements
-//        alarm1StateButton = dom.getElementById("alarm-1-state-button");
-//        alarm1TimeDisplay = dom.getElementById("alarm-1-time-display");
-//        alarm1AMPMDisplay = dom.getElementById("alarm-1-am-pm-display");
-//        alarm1HourButton = dom.getElementById("alarm-1-hour-button");
-//        alarm1MinuteButton = dom.getElementById("alarm-1-minute-button");
-//        alarm1SnoozeButton = dom.getElementById("alarm-1-snooze-button");
+        alarm1StateButton = dom.getElementById("alarm-1-state-button");
+        alarm1TimeDisplay = dom.getElementById("alarm-1-time-display");
+        alarm1AMPMDisplay = dom.getElementById("alarm-1-am-pm-display");
+        alarm1HourButton = dom.getElementById("alarm-1-hour-button");
+        alarm1MinuteButton = dom.getElementById("alarm-1-minute-button");
+        alarm1SnoozeButton = dom.getElementById("alarm-1-snooze-button");
     
         // Alarm2 Elements
-//        alarm2StateButton = dom.getElementById("alarm-2-state-button");
-//        alarm2TimeDisplay = dom.getElementById("alarm-2-time-display");
-//        alarm2AMPMDisplay = dom.getElementById("alarm-2-am-pm-display");
-//        alarm2HourButton = dom.getElementById("alarm-2-hour-button");
-//        alarm2MinuteButton = dom.getElementById("alarm-2-minute-button");
-//        alarm2SnoozeButton = dom.getElementById("alarm-2-snooze-button");
+        alarm2StateButton = dom.getElementById("alarm-2-state-button");
+        alarm2TimeDisplay = dom.getElementById("alarm-2-time-display");
+        alarm2AMPMDisplay = dom.getElementById("alarm-2-am-pm-display");
+        alarm2HourButton = dom.getElementById("alarm-2-hour-button");
+        alarm2MinuteButton = dom.getElementById("alarm-2-minute-button");
+        alarm2SnoozeButton = dom.getElementById("alarm-2-snooze-button");
 
         // Radio Elements
 //        radioStationDisplay = dom.getElementById("radio-station-display");
@@ -145,10 +147,10 @@ public class Main extends Application {
         clockMinuteButtonListener();
         
         // Alarm Listeners
-//        alarmStateButtonListener();
-//        alarmHourButtonListener();
-//        alarmMinuteButtonListener();
-//        alarmSnoozeButtonListener();
+        alarmStateButtonListener();
+        alarmHourButtonListener();
+        alarmMinuteButtonListener();
+        alarmSnoozeButtonListener();
         
         // Radio Listeners
 //        radioTuneDownButtonListener();

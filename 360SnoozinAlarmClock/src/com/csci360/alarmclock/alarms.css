@@ -3,3 +3,43 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
+.alarm-container .alarm-header {
+    height: 15%;
+    margin-top: 20px;
+}
+
+.alarm-container .alarm-header div,
+.alarm-container .alarm-time-container div {
+    height: 100%;
+}
+
+.alarm-container .alarm-header h1 {
+    margin: 0px;
+}
+
+.alarm-container .alarm-header hr {
+    margin-top: 20px;
+    border-top-width: 2px;
+    border-color: black;
+}
+
+.alarm-container .alarm-state-container {
+    height: 10%;
+}
+
+.alarm-container .alarm-time-container {
+    height: 20%;
+    margin-top: 20px;
+}
+
+.alarm-container .alarm-time-container #alarm-1-time-display,
+.alarm-container .alarm-time-container #alarm-2-time-display {
+    font-size: 4vw;
+}
+
+.alarm-container .alarm-time-container #alarm-1-am-pm-display,
+.alarm-container .alarm-time-container #alarm-2-am-pm-display{
+    position: absolute;
+    right: 19px;
+    bottom: 19px;
+}
