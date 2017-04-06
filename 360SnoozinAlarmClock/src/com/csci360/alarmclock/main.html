@@ -17,21 +17,63 @@ and open the template in the editor.
     <body>
         <div id="container">
             <div id="inner-content">
-                <div id="alarm1-container" class="col-sm-3 bg-danger">
-                    Alarm1 Content Goes Here
+                <div class="col-sm-3 text-center alarm-container">
+                    <div class="col-sm-12 no-padding alarm-header">
+                        <div class="col-sm-3 no-padding">
+                            <hr>
+                        </div>
+                        <div class="col-sm-6 no-padding">
+                            <h1>
+                                Alarm 1
+                            </h1>
+                        </div>
+                        <div class="col-sm-3 no-padding">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 no-padding alarm-state-container">
+                        <button id="alarm-1-state-button" class="btn btn-lg btn-danger col-sm-12">
+                            Disabled
+                        </button>
+                    </div>
+                    <div class="col-sm-12 no-padding alarm-time-container well">
+                        <span id="alarm-1-time-display">
+                            12:00
+                        </span>
+                        <span id="alarm-1-am-pm-display">
+                            AM
+                        </span>
+                    </div>
+                    <div class="col-sm-12 no-padding alarm-buttons-container">
+                        <div class="col-sm-6">
+                            <button id="alarm-1-hour-button" class="btn btn-default hour-minute-button">
+                                Hour
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button id="alarm-1-minute-button" class="btn btn-default hour-minute-button">
+                                Minute
+                            </button>
+                        </div>
+                        <div class="col-sm-12">
+                            <button id="alarm-1-snooze-button" class="btn btn-lg btn-default hidden">
+                                Snooze
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div id="clock-container" class="col-sm-6 no-padding text-center">
                     <div id="clock-time-container" class="well">
-                        <label id="clock-time-display">
+                        <span id="clock-time-display">
                             12:00
-                        </label>
+                        </span>
                         <span id="clock-am-pm-display">
                             AM
                         </span>
                     </div>
                     <div id="clock-buttons-container" class="col-sm-12">
                         <div class="col-sm-3">
-                            <button id="clock-hour-button" class="btn btn-lg btn-default">
+                            <button id="clock-hour-button" class="btn btn-lg btn-default hour-minute-button">
                                 Hour
                             </button>
                         </div>
@@ -41,14 +83,56 @@ and open the template in the editor.
                             </button>
                         </div>
                         <div class="col-sm-3">
-                            <button id="clock-minute-button" class="btn btn-lg btn-default">
+                            <button id="clock-minute-button" class="btn btn-lg btn-default hour-minute-button">
                                 Minute
                             </button>
                         </div>
                     </div>
                 </div>
-                <div id="alarm2-container" class="col-sm-3 bg-danger">
-                    Alarm2 Content Goes Here
+                <div class="col-sm-3 text-center alarm-container">
+                    <div class="col-sm-12 no-padding alarm-header">
+                        <div class="col-sm-3 no-padding">
+                            <hr>
+                        </div>
+                        <div class="col-sm-6 no-padding">
+                            <h1>
+                                Alarm 2
+                            </h1>
+                        </div>
+                        <div class="col-sm-3 no-padding">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 no-padding alarm-state-container">
+                        <button id="alarm-2-state-button" class="btn btn-lg btn-danger col-sm-12">
+                            Disabled
+                        </button>
+                    </div>
+                    <div class="col-sm-12 no-padding alarm-time-container well">
+                        <span id="alarm-2-time-display">
+                            12:00
+                        </span>
+                        <span id="alarm-2-am-pm-display">
+                            AM
+                        </span>
+                    </div>
+                    <div class="col-sm-12 no-padding alarm-buttons-container">
+                        <div class="col-sm-6">
+                            <button id="alarm-2-hour-button" class="btn btn-default hour-minute-button">
+                                Hour
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button id="alarm-2-minute-button" class="btn btn-default hour-minute-button">
+                                Minute
+                            </button>
+                        </div>
+                        <div class="col-sm-12">
+                            <button id="alarm-2-snooze-button" class="btn btn-lg btn-default hidden">
+                                Snooze
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div id="radio-container" class="col-sm-12 bg-info">
                     Radio Content Goes Here

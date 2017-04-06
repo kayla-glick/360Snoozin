@@ -4,14 +4,13 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 #clock-container #clock-time-container {
-    margin-top: 10%;
+    margin-top: 20px;
     margin-bottom: 0px;
-    height: 50%;
+    height: 70%;
     position: relative;
 }
 #clock-container #clock-time-display {
-    font-size: 108px;
-    font-weight: normal;
+    font-size: 13vw;
 }
 #clock-container #clock-am-pm-display {
     vertical-align: bottom;
