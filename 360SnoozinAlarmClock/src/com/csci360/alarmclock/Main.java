@@ -281,7 +281,7 @@ public class Main extends Application {
             public void handleEvent(Event ev) {
                 if(system.getIsRadioPlaying()) {
                   system.turnOffRadio();
-                  radioStationDisplay.setTextContent("");
+                  radioStationDisplay.setTextContent(system.getStation());
                   radioPlayButton.setAttribute("class", radioPlayButton.getAttribute("class").replace("btn-danger", "btn-success"));
                   radioPlayButtonIcon.setAttribute("class", radioPlayButtonIcon.getAttribute("class").replace("glyphicon-stop", "glyphicon-play"));
                 } else {

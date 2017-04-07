@@ -141,11 +141,11 @@ public class System {
     }
 
     /**
-     * Method to get the current station name
+     * Method to get the current station name.
      * @return String - the name of the current station
      */
     public String getStation() {
-      return (this.radio.isPlaying()) ? this.radio.getStation() : "";
+      return this.radio.getStation();
     }
 //    // Return and param types may need to be changed
 //    public void adjustRadioVolume(int direction) {
