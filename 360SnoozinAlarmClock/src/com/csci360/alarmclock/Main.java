@@ -318,7 +318,7 @@ public class Main extends Application {
             public void handleEvent(Event ev) {
                 system.toggleAMFM();
                 radioStationDisplay.setTextContent(system.getStation());
-                if (system.getFrequency()) {
+                if (system.getUseAM()) {
                   radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-info", "btn-warning"));
                   radioFrequencyButton.setTextContent("AM");
                 } else {

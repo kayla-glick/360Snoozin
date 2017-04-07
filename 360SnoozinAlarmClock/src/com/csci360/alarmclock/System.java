@@ -120,7 +120,7 @@ public class System {
      * Method to return whether the radio is using AM or FM frequencies.
      * @return boolean - true if using AM
      */
-    public boolean getFrequency() {
+    public boolean getUseAM() {
       return this.radio.getUseAM();
     }
     
