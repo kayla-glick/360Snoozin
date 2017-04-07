@@ -4,6 +4,10 @@
     height: 22%;
 }
 
+#radio-container #radio-station-display {
+    font-size: 2.5vmin;
+}
+
 #radio-container .station-frequency-div {
     height: 100%;
     margin: 0px;
