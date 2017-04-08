@@ -38,16 +38,34 @@ public class Alarm {
     }
     
     /**
-     * Method that returns Alarm's time attribute
+     * Method to add 1 hour to the Alarm's time
+     */
+    public void addHour() {
+        LocalTime newTime = this.time.plusHours(1);
+        
+        this.setTime(newTime);
+    }
+    
+    /**
+     * Method to add 1 minute to the Alarm's time
+     */
+    public void addMinute() {
+        LocalTime newTime = this.time.plusMinutes(1);
+        
+        this.setTime(newTime);
+    }
+    
+    /**
+     * Method that returns Alarm's time
      * 
-     * @return Alarm's time attribute
+     * @return The Alarm's time attribute
      */
     public LocalTime getTime() {
         return this.time;
     }
     
     /**
-     * Method that assigns Alarm's time and snoozeTime attributes
+     * Method that assigns the Alarm's time and snooze time
      * 
      * @param time The time to be set
      */
@@ -57,16 +75,16 @@ public class Alarm {
     }
     
     /**
-     * Method that returns Alarm's snoozeTime attribute
+     * Method that returns the Alarm's snooze time
      * 
-     * @return Alarm's snoozeTime attribute
+     * @return The Alarm's snoozeTime attribute
      */
     public LocalTime getSnoozeTime() {
         return this.snoozeTime;
     }
     
     /**
-     * Method that assigns Alarm's snoozeTime attribute
+     * Method that assigns the Alarm's snooze time
      * 
      * @param snoozeTime The time to be set
      */
@@ -75,16 +93,16 @@ public class Alarm {
     }
     
     /**
-     * Method that returns Alarm's isActive attribute
+     * Method that returns whether or not the Alarm is active
      * 
-     * @return Alarm's isActive attribute
+     * @return The Alarm's isActive attribute
      */
     public boolean getIsActive() {
         return this.isActive;
     }
     
     /**
-     * Method that handles "enabling" and "disabling" the Alarm
+     * Method that enables or disables the alarm. If true, the alarm is enabled. If false, the alarm is disabled
      * 
      * @param isActive The value to be set
      */
@@ -100,16 +118,16 @@ public class Alarm {
     }
     
     /**
-     * Method that assigns Alarm's isSounding attribute
+     * Method that returns whether or not the Alarm is sounding
      * 
-     * @return Alarm's isSounding attribute
+     * @return The Alarm's isSounding attribute
      */
     public boolean getIsSounding() {
         return this.isSounding;
     }
     
     /**
-     * Method that handles "playing" and "turning off" the Alarm's sound
+     * Method that sounds or turns off the Alarm. If true, the Alarm sounds. If false, the Alarm is turned off.
      * 
      * @param isSounding The value to be set
      */
@@ -118,28 +136,12 @@ public class Alarm {
     }
     
     /**
-     * Method that handles snoozing the Alarm
+     * Method that snoozes the Alarm, adding 10 minutes to the time provided.
+     * 
+     * @param currentTime The current time, provided by a Clock
      */
     public void snooze(LocalTime currentTime) {
         this.setSnoozeTime(currentTime.plus(Alarm.SNOOZE_INTERVAL, ChronoUnit.MINUTES));
         this.setIsSounding(false);
-    }
-    
-    /**
-     * Method to add an hour to the time
-     */
-    public void addHour() {
-        LocalTime newTime = this.time.plusHours(1);
-        
-        this.setTime(newTime);
-    }
-    
-    /**
-     * Method to add a minute to the time
-     */
-    public void addMinute() {
-        LocalTime newTime = this.time.plusMinutes(1);
-        
-        this.setTime(newTime);
     }
 }

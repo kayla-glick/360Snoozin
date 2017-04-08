@@ -19,10 +19,38 @@ public class TimeDisplayUpdater {
             
     private boolean use24HourFormat = false;
     
+    /**
+     * Method to add a time display with a key identifier
+     * 
+     * @param identifier The key to be used in the HashMap
+     * @param timeDisplay The time display element
+     * @param amPMDisplay The ampm display element
+     */
     public void add(String identifier, Element timeDisplay, Element amPMDisplay) {
         this.displays.put(identifier, new Element[]{timeDisplay, amPMDisplay});
     }
     
+    /**
+     * Method to get the current time format as a string
+     * 
+     * @return A string representing the current time format
+     */
+    public String getTimeFormat() {
+        String rtnval;
+        
+        if ( this.use24HourFormat ) {
+            rtnval = "24 Hour Format";
+        }
+        else {
+            rtnval = "12 Hour Format";
+        }
+        
+        return rtnval;
+    }
+    
+    /**
+     * Method to toggle the time format between 12 and 24 hours
+     */
     public void toggleUse24HourFormat() {
         this.use24HourFormat = !this.use24HourFormat;
         
@@ -54,6 +82,12 @@ public class TimeDisplayUpdater {
         }
     }
     
+    /**
+     * Method to update the specified time display to the specified time
+     * 
+     * @param identifier The key to get the elements from the hashmap
+     * @param time The time to set
+     */
     public void updateTimeDisplay(String identifier, LocalTime time) {
         Element[] elements = this.displays.get(identifier);
         Element timeDisplay = elements[0];

@@ -20,14 +20,23 @@ public class System {
         this.radio = new FileRadio();
     }
     
+    /**
+     * Method to add 1 hour to the System's clock
+     */
     public void addHourToClock() {
         this.clock.addHour();
     }
     
+    /**
+     * Method to add 1 minute to the System's clock
+     */
     public void addMinuteToClock() {
         this.clock.addMinute();
     }
     
+    /**
+     * Method to get the System's clock's time
+     */
     public LocalTime getClockTime() {
         return this.clock.getTime();
     }
@@ -35,7 +44,7 @@ public class System {
     /**
      * Method to add an hour to the specified Alarm's time
      * 
-     * @param n The alarm number
+     * @param n An integer representing the nth Alarm (1 or 2)
      */
     public void addHourToAlarm(int n) {
         this.clock.addHourToAlarm(n);
@@ -44,7 +53,7 @@ public class System {
     /**
      * Method to add a minute to the specified Alarm's time
      * 
-     * @param n The alarm number
+     * @param n An integer representing the nth Alarm (1 or 2)
      */
     public void addMinuteToAlarm(int n) {
         this.clock.addMinuteToAlarm(n);
@@ -53,15 +62,15 @@ public class System {
     /**
      * Method to get the specified Alarm's time as a LocalDate
      * 
-     * @param n The alarm number
-     * @return The Alarm's time as a LocalDateTime object
+     * @param n An integer representing the nth Alarm (1 or 2)
+     * @return The Alarm's time
      */
     public LocalTime getAlarmTime(int n) {
         return this.clock.getAlarmTime(n);
     }
     
     /**
-     * Method to enable an alarm
+     * Method to enable the specified Alarm
      * 
      * @param n An integer representing the nth Alarm (1 or 2)
      */
@@ -70,7 +79,7 @@ public class System {
     }
     
     /**
-     * Method to disable an alarm
+     * Method to disable the specified Alarm
      * 
      * @param n An integer representing the nth Alarm (1 or 2)
      */
@@ -78,17 +87,44 @@ public class System {
         this.clock.disableAlarm(n);
     }
     
+    /**
+     * Method to snooze the specified Alarm
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     */
     public void snoozeAlarm(int n) {
         this.clock.snoozeAlarm(n);
     }
     
+    /**
+     * Method to check whether or not the specified Alarm is sounding
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     * @return Whether the alarm is sounding or not
+     */
+    public boolean isAlarmSounding(int n) {
+        return this.clock.isAlarmSounding(n);
+    }
+    
+    /**
+     * Method to check whether or not any Alarms are sounding
+     * 
+     * @return Whether or not any alarms are sounding
+     */
+    public boolean anyAlarmsSounding() {
+        return this.clock.anyAlarmsSounding();
+    }
+    
+    /**
+     * Method to determine whether to sound alarms. If alarms are sounded, the radio is turned off
+     * 
+     * @return An array of integers containing the integers n representing the nth Alarm (1 or 2) or defaulting to 0
+     */
     public int[] attemptToSoundAlarms() {
         int[] alarmNumbersToPlay = this.clock.attemptToSoundAlarms();
         
-        for ( int i : alarmNumbersToPlay ) {
-            if ( i != 0 ) {
-                this.turnOffRadio();
-            }
+        if ( this.clock.anyAlarmsSounding() ) {
+            this.turnOffRadio();
         }
         
         return alarmNumbersToPlay;

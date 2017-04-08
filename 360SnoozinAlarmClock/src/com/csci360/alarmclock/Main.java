@@ -5,6 +5,7 @@
  */
 package com.csci360.alarmclock;
 
+import java.time.LocalTime;
 import java.util.Timer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -28,6 +29,7 @@ public class Main extends Application {
     
     private static TimeDisplayUpdater timeDisplayUpdater;
     private static AlarmButtonUpdater alarmButtonUpdater;
+    private static RadioButtonUpdater radioButtonUpdater;
     
     // Clock DOM Elements
     private static Element clockTimeDisplay;
@@ -41,9 +43,7 @@ public class Main extends Application {
     private static Element alarm1TimeDisplay;
     private static Element alarm1AMPMDisplay;
     private static Element alarm1HourButton;
-    private static Element alarm1HourButtonContainer;
     private static Element alarm1MinuteButton;
-    private static Element alarm1MinuteButtonContainer;
     private static Element alarm1SnoozeButton;
     
     // Alarm2 DOM Elements
@@ -51,9 +51,7 @@ public class Main extends Application {
     private static Element alarm2TimeDisplay;
     private static Element alarm2AMPMDisplay;
     private static Element alarm2HourButton;
-    private static Element alarm2HourButtonContainer;
     private static Element alarm2MinuteButton;
-    private static Element alarm2MinuteButtonContainer;
     private static Element alarm2SnoozeButton;
     
     // Radio Elements
@@ -61,7 +59,7 @@ public class Main extends Application {
     private static Element radioFrequencyButton;
     private static Element radioTuneDownButton;
     private static Element radioPlayButton;
-    private static Element radioPlayButtonIcon;
+    private static Element radioStopButton;
     private static Element radioTuneUpButton;
     
     @Override
@@ -103,12 +101,19 @@ public class Main extends Application {
                 timeDisplayUpdater.add("clock", clockTimeDisplay, clockAMPMDisplay);
                 timeDisplayUpdater.add("alarm 1", alarm1TimeDisplay, alarm1AMPMDisplay);
                 timeDisplayUpdater.add("alarm 2", alarm2TimeDisplay, alarm2AMPMDisplay);
+                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
+                timeDisplayUpdater.updateTimeDisplay("alarm 1", system.getAlarmTime(1));
+                timeDisplayUpdater.updateTimeDisplay("alarm 2", system.getAlarmTime(2));
+                
+                toggleTimeFormatButton.setTextContent(timeDisplayUpdater.getTimeFormat());
                 
                 alarmButtonUpdater = new AlarmButtonUpdater();
                 alarmButtonUpdater.addAlarm("alarm 1", alarm1HourButton, alarm1MinuteButton, alarm1SnoozeButton);
                 alarmButtonUpdater.addAlarm("alarm 2", alarm2HourButton, alarm2MinuteButton, alarm2SnoozeButton);
                 
-                ClockTimeTask clockTimeTask = new ClockTimeTask(system, timeDisplayUpdater, alarmButtonUpdater);
+                radioButtonUpdater = new RadioButtonUpdater(radioPlayButton, radioStopButton, radioStationDisplay);
+                
+                ClockTimeTask clockTimeTask = new ClockTimeTask(system, timeDisplayUpdater, alarmButtonUpdater, radioButtonUpdater);
         
                 clockTimer.scheduleAtFixedRate(clockTimeTask, 1000, 1000);
             }
@@ -142,9 +147,7 @@ public class Main extends Application {
         alarm1TimeDisplay = dom.getElementById("alarm-1-time-display");
         alarm1AMPMDisplay = dom.getElementById("alarm-1-am-pm-display");
         alarm1HourButton = dom.getElementById("alarm-1-hour-button");
-        alarm1HourButtonContainer = (Element) alarm1HourButton.getParentNode();
         alarm1MinuteButton = dom.getElementById("alarm-1-minute-button");
-        alarm1MinuteButtonContainer = (Element) alarm1HourButton.getParentNode();
         alarm1SnoozeButton = dom.getElementById("alarm-1-snooze-button");
     
         // Alarm2 Elements
@@ -152,9 +155,7 @@ public class Main extends Application {
         alarm2TimeDisplay = dom.getElementById("alarm-2-time-display");
         alarm2AMPMDisplay = dom.getElementById("alarm-2-am-pm-display");
         alarm2HourButton = dom.getElementById("alarm-2-hour-button");
-        alarm2HourButtonContainer = (Element) alarm2HourButton.getParentNode();
         alarm2MinuteButton = dom.getElementById("alarm-2-minute-button");
-        alarm2MinuteButtonContainer = (Element) alarm2MinuteButton.getParentNode();
         alarm2SnoozeButton = dom.getElementById("alarm-2-snooze-button");
         
         // Radio Elements
@@ -162,7 +163,7 @@ public class Main extends Application {
         radioFrequencyButton = dom.getElementById("radio-frequency-button");
         radioTuneDownButton = dom.getElementById("radio-tune-down-button");
         radioPlayButton = dom.getElementById("radio-play-button");
-        radioPlayButtonIcon = dom.getElementById("radio-play-button-icon");
+        radioStopButton = dom.getElementById("radio-stop-button");
         radioTuneUpButton = dom.getElementById("radio-tune-up-button");
         
     }
@@ -190,7 +191,7 @@ public class Main extends Application {
     }
 
     /**
-     * Method to listen on clock hour button and add an hour
+     * Method to listen on clock hour button and add 1 hour to the Clock
      */
     private static void clockHourButtonListener() {
         EventListener listener = new EventListener() {
@@ -204,20 +205,21 @@ public class Main extends Application {
     }
     
     /**
-     * Method to listen on toggle time format button and toggle format
+     * Method to listen on toggle time format button and toggle the time format for all time displays
      */
     private static void toggleTimeFormatButtonListener() {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
                 timeDisplayUpdater.toggleUse24HourFormat();
+                toggleTimeFormatButton.setTextContent(timeDisplayUpdater.getTimeFormat());
             }
         };
         ((EventTarget) toggleTimeFormatButton).addEventListener("click", listener, false);
     }
     
     /**
-     * Method to listen on clock minute button and add a minute
+     * Method to listen on clock minute button and add 1 minute to the Clock
      */
     private static void clockMinuteButtonListener() {
         EventListener listener = new EventListener() {
@@ -248,18 +250,11 @@ public class Main extends Application {
                     
                 }
                 else {
-                    system.disableAlarm(alarmNumber);
+                    if ( system.isAlarmSounding(alarmNumber) ) {
+                        system.disableAlarm(alarmNumber);
                     
-                    Element hourButton = alarmNumber == 1 ? alarm1HourButton : alarm2HourButton;
-                    Element hourButtonContainer = alarmNumber == 1 ? alarm1HourButtonContainer : alarm2HourButtonContainer;
-                    Element minuteButton = alarmNumber == 1 ? alarm1MinuteButton : alarm2MinuteButton;
-                    Element minuteButtonContainer = alarmNumber == 1 ? alarm1MinuteButtonContainer : alarm2MinuteButtonContainer;
-                    Element snoozeButton = alarmNumber == 1 ? alarm1SnoozeButton : alarm2SnoozeButton;
-
-                    hourButtonContainer.appendChild(hourButton);
-                    minuteButtonContainer.appendChild(minuteButton);
-                    snoozeButton.getParentNode().removeChild(snoozeButton);
-                    
+                        alarmButtonUpdater.updateAlarmButtonsOnDisable(alarmNumber);   
+                    }
                     element.setTextContent("Disabled");
                     element.setAttribute("class", element.getAttribute("class").replace("btn-success", "btn-danger"));
                     element.setAttribute("data-state", "disabled");
@@ -271,7 +266,7 @@ public class Main extends Application {
     }
     
     /**
-     * Method to listen on alarm hour button and add an hour
+     * Method to listen on alarm hour button and add 1 hour to the specified Alarm
      */
     private static void alarmHourButtonListener() {
         EventListener listener = new EventListener() {
@@ -291,7 +286,7 @@ public class Main extends Application {
     }
     
     /**
-     * Method to listen on alarm minute button and add a minute
+     * Method to listen on alarm hour button and add 1 minute to the specified Alarm
      */
     private static void alarmMinuteButtonListener() {
         EventListener listener = new EventListener() {
@@ -311,7 +306,8 @@ public class Main extends Application {
     }
     
     /**
-     * Method to listen on alarm snooze button and snooze alarm
+     * Method to listen on alarm snooze button and snooze the specified Alarm.
+     * Also hides the snooze button and shows the alarm hour and minute buttons.
      */
     private static void alarmSnoozeButtonListener() {
         EventListener listener = new EventListener() {
@@ -322,15 +318,7 @@ public class Main extends Application {
                 
                 system.snoozeAlarm(alarmNumber);
                 
-                Element hourButton = alarmNumber == 1 ? alarm1HourButton : alarm2HourButton;
-                Element hourButtonContainer = alarmNumber == 1 ? alarm1HourButtonContainer : alarm2HourButtonContainer;
-                Element minuteButton = alarmNumber == 1 ? alarm1MinuteButton : alarm2MinuteButton;
-                Element minuteButtonContainer = alarmNumber == 1 ? alarm1MinuteButtonContainer : alarm2MinuteButtonContainer;
-                Element snoozeButton = alarmNumber == 1 ? alarm1SnoozeButton : alarm2SnoozeButton;
-                
-                hourButtonContainer.appendChild(hourButton);
-                minuteButtonContainer.appendChild(minuteButton);
-                snoozeButton.getParentNode().removeChild(snoozeButton);
+                alarmButtonUpdater.updateAlarmButtonsOnSnooze(alarmNumber);
             }
         };
         ((EventTarget) alarm1SnoozeButton).addEventListener("click", listener, false);
@@ -359,19 +347,18 @@ public class Main extends Application {
             @Override
             public void handleEvent(Event ev) {
                 if(system.getIsRadioPlaying()) {
-                  system.turnOffRadio();
-                  radioStationDisplay.setTextContent(system.getStation());
-                  radioPlayButton.setAttribute("class", radioPlayButton.getAttribute("class").replace("btn-danger", "btn-success"));
-                  radioPlayButtonIcon.setAttribute("class", radioPlayButtonIcon.getAttribute("class").replace("glyphicon-stop", "glyphicon-play"));
+                    system.turnOffRadio();
+                    radioButtonUpdater.updateRadioButtonsOnStop(system.getStation());
                 } else {
-                  system.playRadio();
-                  radioStationDisplay.setTextContent(system.getStation());
-                  radioPlayButton.setAttribute("class", radioPlayButton.getAttribute("class").replace("btn-success", "btn-danger"));
-                  radioPlayButtonIcon.setAttribute("class", radioPlayButtonIcon.getAttribute("class").replace("glyphicon-play", "glyphicon-stop"));
+                    if ( !system.anyAlarmsSounding() ) {
+                        system.playRadio();
+                        radioButtonUpdater.updateRadioButtonsOnPlay(system.getStation());
+                    }
                 }
             }
         };
         ((EventTarget) radioPlayButton).addEventListener("click", listener, false);
+        ((EventTarget) radioStopButton).addEventListener("click", listener, false);
     }
 
     /**
