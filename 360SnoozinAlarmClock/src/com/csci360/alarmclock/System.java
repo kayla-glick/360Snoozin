@@ -95,6 +95,14 @@ public class System {
     public void turnOffRadio() {
        this.radio.stopRadio();
     }
+
+    /**
+     * Returns whether or not the radio is playing.
+     * @return boolean - true if the radio is currently playing
+     */
+    public boolean getIsRadioPlaying() {
+      return this.radio.isPlaying();
+    }
     
     /**
      * Method to toggle whether the radio uses AM or FM signal
@@ -109,21 +117,34 @@ public class System {
     }
     
     /**
+     * Method to return whether the radio is using AM or FM frequencies.
+     * @return boolean - true if using AM
+     */
+    public boolean getUseAM() {
+      return this.radio.getUseAM();
+    }
+    
+    /**
      * Method to change the radio's current station
      * 
      * @param direction The direction to change the station (0 or 1)
      */
     public void changeStation(int direction) {
-        try {
-            this.radio.tune(direction);
-        }
-        catch ( IOException e ) {
-            java.lang.System.out.println("Placeholder for return to GUI indicating error");
+        if (this.radio.isPlaying()) {
+            try {
+                this.radio.tune(direction);
+            }
+            catch ( IOException e ) {
+                java.lang.System.out.println("Placeholder for return to GUI indicating error");
+            }
         }
     }
-    
-//    // Return and param types may need to be changed
-//    public void adjustRadioVolume(int direction) {
-//        
-//    }
+
+    /**
+     * Method to get the current station name.
+     * @return String - the name of the current station
+     */
+    public String getStation() {
+      return this.radio.getStation();
+    }
 }

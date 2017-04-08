@@ -58,13 +58,18 @@ public class FileRadio implements Radio {
   /**
    * Returns the name of the current InputStream (the current "station").
    * In this case, it is the name of the file associated with the current InputStream
-   * without its extention.
+   * without its extention. If the radio is not playing, there is no current station,
+   * so an empty string is returned.
    * @return String
    */
   @Override
   public String getStation() {
-    String nameWithExtention = useAM ? AM_FILES[currentAMFile].getName() : FM_FILES[currentFMFile].getName();
-    return nameWithExtention.substring(0, nameWithExtention.lastIndexOf("."));
+    String station = "";
+    if(this.isPlaying()) {
+      String nameWithExtention = useAM ? AM_FILES[currentAMFile].getName() : FM_FILES[currentFMFile].getName();
+      station = nameWithExtention.substring(0, nameWithExtention.lastIndexOf("."));
+    }
+    return station;
   }
 
   /**

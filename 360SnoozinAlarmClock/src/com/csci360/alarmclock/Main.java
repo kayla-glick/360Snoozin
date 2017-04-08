@@ -49,8 +49,10 @@ public class Main extends Application {
     
     // Radio Elements
     private static Element radioStationDisplay;
+    private static Element radioFrequencyButton;
     private static Element radioTuneDownButton;
     private static Element radioPlayButton;
+    private static Element radioPlayButtonIcon;
     private static Element radioTuneUpButton;
     
     @Override
@@ -130,10 +132,12 @@ public class Main extends Application {
         alarm2SnoozeButton = dom.getElementById("alarm-2-snooze-button");
 
         // Radio Elements
-//        radioStationDisplay = dom.getElementById("radio-station-display");
-//        radioTuneDownButton = dom.getElementById("radio-tune-down-button");
-//        radioPlayButton = dom.getElementById("radio-play-button");
-//        radioTuneUpButton = dom.getElementById("radio-tune-up-button");
+        radioStationDisplay = dom.getElementById("radio-station-display");
+        radioFrequencyButton = dom.getElementById("radio-frequency-button");
+        radioTuneDownButton = dom.getElementById("radio-tune-down-button");
+        radioPlayButton = dom.getElementById("radio-play-button");
+        radioPlayButtonIcon = dom.getElementById("radio-play-button-icon");
+        radioTuneUpButton = dom.getElementById("radio-tune-up-button");
         
     }
     
@@ -153,9 +157,10 @@ public class Main extends Application {
         alarmSnoozeButtonListener();
         
         // Radio Listeners
-//        radioTuneDownButtonListener();
-//        radioPlayButtonListener();
-//        radioTuneUpButtonListener();
+        radioTuneDownButtonListener();
+        radioPlayButtonListener();
+        radioFrequencyButtonListener();
+        radioTuneUpButtonListener();
     }
 
     /**
@@ -260,12 +265,13 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                java.lang.System.out.println("Tune radio down");
+                system.changeStation(-1);
+                radioStationDisplay.setTextContent(system.getStation());
             }
         };
         ((EventTarget) radioTuneDownButton).addEventListener("click", listener, false);
     }
-    
+
     /**
      * Method to listen on radio play button and play it / turn it off
      */
@@ -273,12 +279,22 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                java.lang.System.out.println("Play / Turn off radio");
+                if(system.getIsRadioPlaying()) {
+                  system.turnOffRadio();
+                  radioStationDisplay.setTextContent(system.getStation());
+                  radioPlayButton.setAttribute("class", radioPlayButton.getAttribute("class").replace("btn-danger", "btn-success"));
+                  radioPlayButtonIcon.setAttribute("class", radioPlayButtonIcon.getAttribute("class").replace("glyphicon-stop", "glyphicon-play"));
+                } else {
+                  system.playRadio();
+                  radioStationDisplay.setTextContent(system.getStation());
+                  radioPlayButton.setAttribute("class", radioPlayButton.getAttribute("class").replace("btn-success", "btn-danger"));
+                  radioPlayButtonIcon.setAttribute("class", radioPlayButtonIcon.getAttribute("class").replace("glyphicon-play", "glyphicon-stop"));
+                }
             }
         };
         ((EventTarget) radioPlayButton).addEventListener("click", listener, false);
     }
-    
+
     /**
      * Method to listen on radio tune up button and tune radio up
      */
@@ -286,12 +302,34 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                java.lang.System.out.println("Tune radio up");
+                system.changeStation(1);
+                radioStationDisplay.setTextContent(system.getStation());
             }
         };
         ((EventTarget) radioTuneUpButton).addEventListener("click", listener, false);
     }
-    
+
+    /**
+     * Method to listen on radio toggle frequency button
+     */
+    private static void radioFrequencyButtonListener() {
+        EventListener listener = new EventListener() {
+            @Override
+            public void handleEvent(Event ev) {
+                system.toggleAMFM();
+                radioStationDisplay.setTextContent(system.getStation());
+                if (system.getUseAM()) {
+                  radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-info", "btn-warning"));
+                  radioFrequencyButton.setTextContent("AM");
+                } else {
+                  radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-warning", "btn-info"));
+                  radioFrequencyButton.setTextContent("FM");
+                }
+            }
+        };
+        ((EventTarget) radioFrequencyButton).addEventListener("click", listener, false);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
