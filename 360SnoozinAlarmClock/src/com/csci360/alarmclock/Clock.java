@@ -5,34 +5,22 @@
  */
 package com.csci360.alarmclock;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalTime;
 
 public class Clock {
     
-    public final static ChronoUnit MINUTES = ChronoUnit.MINUTES;
-    private final static long MINUTE = 60000;
-    
-    private Instant time;
+    private LocalTime time;
     private boolean use24HourFormat;
     private Alarm[] alarms = new Alarm[2];
-    private Timer timer;
-    private TimerTask clockTimeTask;
     
     /**
      * Constructor
      */
     public Clock() {
-        this.time = Instant.now();
+        this.time = this.time = LocalTime.now().withHour(0).withMinute(0);
         this.use24HourFormat = false;
         this.alarms[0] = new Alarm();
         this.alarms[1] = new Alarm();
-        this.timer = new Timer();
-        this.clockTimeTask = new ClockTimeTask(this);
-        
-        this.timer.scheduleAtFixedRate(clockTimeTask, 0, Clock.MINUTE);
     }
     
     /**
@@ -40,7 +28,7 @@ public class Clock {
      * 
      * @return Clock's time attribute
      */
-    public Instant getTime(){
+    public LocalTime getTime(){
         return this.time;
     }
     
@@ -49,8 +37,22 @@ public class Clock {
      * 
      * @param time The time to be set
      */
-    public void setTime(Instant time) {
+    public void setTime(LocalTime time) {
         this.time = time;
+    }
+    
+    /**
+     * Method to add an hour to the time
+     */
+    public void addHour() {
+        this.setTime(this.time.plusHours(1));
+    }
+    
+    /**
+     * Method to add a minute to the time
+     */
+    public void addMinute() {
+        this.setTime(this.time.plusMinutes(1));
     }
     
     /**
@@ -79,5 +81,60 @@ public class Clock {
      */
     public Alarm[] getAlarms(){
         return alarms;
+    }
+    
+    /**
+     * Method to add a minute to the specified Alarm's time
+     * 
+     * @param n The alarm number
+     */
+    public void addHourToAlarm(int n) {
+        this.alarms[n-1].addHour();
+    }
+    
+    /**
+     * Method to add a minute to the specified Alarm's time
+     * 
+     * @param n The alarm number
+     */
+    public void addMinuteToAlarm(int n) {
+        this.alarms[n-1].addMinute();
+    }
+    
+    /**
+     * Method to return the specified Alarm's time
+     * 
+     * @param n The alarm number
+     * @return The alarm's time as LocalDateTime
+     */
+    public LocalTime getAlarmTime(int n) {
+        return this.alarms[n-1].getTime();
+    }
+    
+    public void enableAlarm(int n) {
+        this.alarms[n-1].setIsActive(true);
+    }
+    
+    public void disableAlarm(int n) {
+        this.alarms[n-1].setIsActive(false);
+    }
+    
+    public void snoozeAlarm(int n) {
+        if ( alarms[n-1].getIsSounding() ) {
+            alarms[n-1].snooze(this.getTime());
+        }
+    }
+    
+    public int[] attemptToSoundAlarms() {
+        int[] alarmNumbersToPlay = new int[this.alarms.length];
+        
+        for ( int i=0; i<this.alarms.length; i++ ) {
+            if ( alarms[i].getIsActive() && alarms[i].getSnoozeTime() != null && this.getTime().getHour() == alarms[i].getSnoozeTime().getHour() && this.getTime().getMinute() == alarms[i].getSnoozeTime().getMinute() ) {
+                alarms[i].setIsSounding(true);
+                alarmNumbersToPlay[i] = i+1;
+            }
+        }
+        
+        return alarmNumbersToPlay;
     }
 }

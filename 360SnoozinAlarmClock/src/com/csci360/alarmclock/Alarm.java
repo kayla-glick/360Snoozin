@@ -5,20 +5,20 @@
  */
 package com.csci360.alarmclock;
 
-import java.time.Instant;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Timer;
 
 public class Alarm {
     public final static int SNOOZE_INTERVAL = 10;
-    public final static ChronoUnit SNOOZE_UNIT = ChronoUnit.MINUTES;
-    private final static long ALARM_DELAY = 0;
+    
+    private final static long ALARM_DELAY = 500;
     private final static long ALARM_INTERVAL = 500;
     
     private Timer alarmTimer;
     private PlayAlarmTask alarmTask;
-    private Instant time;
-    private Instant snoozeTime;
+    private LocalTime time;
+    private LocalTime snoozeTime;
     private boolean isActive;
     private boolean isSounding;
     
@@ -27,8 +27,8 @@ public class Alarm {
      * 
      */
     public Alarm() {
-        this.time = null;
-        this.snoozeTime = null;
+        this.time = LocalTime.now().withHour(0).withMinute(0);
+        this.snoozeTime = this.time;
         this.isActive = false;
         this.isSounding = false;
         this.alarmTimer = new Timer();
@@ -42,7 +42,7 @@ public class Alarm {
      * 
      * @return Alarm's time attribute
      */
-    public Instant getTime() {
+    public LocalTime getTime() {
         return this.time;
     }
     
@@ -51,7 +51,7 @@ public class Alarm {
      * 
      * @param time The time to be set
      */
-    public void setTime(Instant time) {
+    public void setTime(LocalTime time) {
         this.time = time;
         this.setSnoozeTime(time);
     }
@@ -61,7 +61,7 @@ public class Alarm {
      * 
      * @return Alarm's snoozeTime attribute
      */
-    public Instant getSnoozeTime() {
+    public LocalTime getSnoozeTime() {
         return this.snoozeTime;
     }
     
@@ -70,7 +70,7 @@ public class Alarm {
      * 
      * @param snoozeTime The time to be set
      */
-    private void setSnoozeTime(Instant snoozeTime) {
+    private void setSnoozeTime(LocalTime snoozeTime) {
         this.snoozeTime = snoozeTime;
     }
     
@@ -93,6 +93,9 @@ public class Alarm {
         
         if ( isActive ) {
             this.setSnoozeTime(this.time);
+        }
+        else {
+            this.setIsSounding(isActive);
         }
     }
     
@@ -117,8 +120,26 @@ public class Alarm {
     /**
      * Method that handles snoozing the Alarm
      */
-    public void snooze() {
-        this.setSnoozeTime(this.snoozeTime.plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT));
+    public void snooze(LocalTime currentTime) {
+        this.setSnoozeTime(currentTime.plus(Alarm.SNOOZE_INTERVAL, ChronoUnit.MINUTES));
         this.setIsSounding(false);
+    }
+    
+    /**
+     * Method to add an hour to the time
+     */
+    public void addHour() {
+        LocalTime newTime = this.time.plusHours(1);
+        
+        this.setTime(newTime);
+    }
+    
+    /**
+     * Method to add a minute to the time
+     */
+    public void addMinute() {
+        LocalTime newTime = this.time.plusMinutes(1);
+        
+        this.setTime(newTime);
     }
 }

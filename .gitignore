@@ -4,6 +4,8 @@
 /360SnoozinAlarmClock/build/*
 /360SnoozinAlarmClock/dist/*
 
+#error log files
+*.log
 #compiled class files
 *.class
 

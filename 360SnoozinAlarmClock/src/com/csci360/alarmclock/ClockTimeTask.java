@@ -5,33 +5,24 @@
  */
 package com.csci360.alarmclock;
 
-import java.time.temporal.ChronoUnit;
 import java.util.TimerTask;
 
 public class ClockTimeTask extends TimerTask{
     
-    private Clock clock;
+    private final System system;
+    private final TimeDisplayUpdater timeDisplayUpdater;
+    private final AlarmButtonUpdater alarmButtonUpdater;
     
-    /**
-     * Constructor
-     * 
-     * @param clock The clock to increment
-     */
-    public ClockTimeTask(Clock clock){
-        this.clock = clock;
+    public ClockTimeTask(System system, TimeDisplayUpdater timeDisplayUpdater, AlarmButtonUpdater alarmButtonUpdater) {
+        this.system = system;
+        this.timeDisplayUpdater = timeDisplayUpdater;
+        this.alarmButtonUpdater = alarmButtonUpdater;
     }
 
-    /**
-     * Method to update Clock's time
-     */
     @Override
-    public void run(){
-        clock.setTime(clock.getTime().plus(1, ChronoUnit.MINUTES));
-        
-        for ( Alarm alarm : clock.getAlarms() ) {
-            if ( alarm.getTime() != null && clock.getTime().equals(alarm.getTime()) ) {
-                alarm.setIsSounding(true);
-            }
-        }
+    public void run() {
+        this.system.addMinuteToClock();
+        this.timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
+        this.alarmButtonUpdater.updateAlarmButtons(this.system.attemptToSoundAlarms());
     }
 }

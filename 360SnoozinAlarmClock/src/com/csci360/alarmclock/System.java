@@ -6,7 +6,7 @@
 package com.csci360.alarmclock;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.LocalTime;
 
 public class System {
     protected Clock clock;
@@ -20,30 +20,44 @@ public class System {
         this.radio = new FileRadio();
     }
     
-    /**
-     * Method to set the Clock's time attribute
-     * 
-     * @param time The time to be set
-     */
-    public void setClockTime(String time) {  
-        this.clock.setTime(Instant.parse(time));
+    public void addHourToClock() {
+        this.clock.addHour();
+    }
+    
+    public void addMinuteToClock() {
+        this.clock.addMinute();
+    }
+    
+    public LocalTime getClockTime() {
+        return this.clock.getTime();
     }
     
     /**
-     * Method to toggle Clock's time format
+     * Method to add an hour to the specified Alarm's time
+     * 
+     * @param n The alarm number
      */
-    public void toggleTimeFormat() {
-        this.clock.setUse24HourFormat(!this.clock.getUse24HourFormat());
+    public void addHourToAlarm(int n) {
+        this.clock.addHourToAlarm(n);
     }
     
     /**
-     * Method to set the Alarm's time
+     * Method to add a minute to the specified Alarm's time
      * 
-     * @param time The time to set
-     * @param n  An integer representing the nth Alarm (1 or 2)
+     * @param n The alarm number
      */
-    public void setAlarmTime(String time, int n) {
-        this.clock.getAlarms()[n-1].setTime(Instant.parse(time));
+    public void addMinuteToAlarm(int n) {
+        this.clock.addMinuteToAlarm(n);
+    }
+    
+    /**
+     * Method to get the specified Alarm's time as a LocalDate
+     * 
+     * @param n The alarm number
+     * @return The Alarm's time as a LocalDateTime object
+     */
+    public LocalTime getAlarmTime(int n) {
+        return this.clock.getAlarmTime(n);
     }
     
     /**
@@ -52,7 +66,7 @@ public class System {
      * @param n An integer representing the nth Alarm (1 or 2)
      */
     public void enableAlarm(int n) {
-        this.clock.getAlarms()[n-1].setIsActive(true);
+        this.clock.enableAlarm(n);
     }
     
     /**
@@ -61,22 +75,25 @@ public class System {
      * @param n An integer representing the nth Alarm (1 or 2)
      */
     public void disableAlarm(int n) {
-        this.clock.getAlarms()[n-1].setIsActive(false);
+        this.clock.disableAlarm(n);
     }
     
-    /**
-     * Method to snooze any alarms which are currently playing
-     */
-    public void snoozeAlarms() {
-        Alarm[] alarms = this.clock.getAlarms();
+    public void snoozeAlarm(int n) {
+        this.clock.snoozeAlarm(n);
+    }
+    
+    public int[] attemptToSoundAlarms() {
+        int[] alarmNumbersToPlay = this.clock.attemptToSoundAlarms();
         
-        for ( Alarm alarm : alarms ) {
-            if ( alarm.getIsSounding() ) {
-                alarm.snooze();
+        for ( int i : alarmNumbersToPlay ) {
+            if ( i != 0 ) {
+                this.turnOffRadio();
             }
         }
+        
+        return alarmNumbersToPlay;
     }
-    
+        
     /**
      * Method to play the radio
      */
