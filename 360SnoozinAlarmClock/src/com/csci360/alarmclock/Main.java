@@ -97,10 +97,8 @@ public class Main extends Application {
                 setupActionListeners();
                 
                 timeDisplayUpdater = new TimeDisplayUpdater();
-                timeDisplayUpdater.add("clock", clockTimeDisplay, clockAMPMDisplay);
                 timeDisplayUpdater.add("alarm 1", alarm1TimeDisplay, alarm1AMPMDisplay);
                 timeDisplayUpdater.add("alarm 2", alarm2TimeDisplay, alarm2AMPMDisplay);
-                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
                 timeDisplayUpdater.updateTimeDisplay("alarm 1", system.getAlarmTime(1));
                 timeDisplayUpdater.updateTimeDisplay("alarm 2", system.getAlarmTime(2));
                 
