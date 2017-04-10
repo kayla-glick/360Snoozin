@@ -5,7 +5,6 @@
  */
 package com.csci360.alarmclock;
 
-import java.time.LocalTime;
 import java.util.Timer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -119,7 +118,7 @@ public class Main extends Application {
             }
         });
         engine.load(Main.class.getResource("main.html").toExternalForm());
-        enableFirebug(engine); // Comment out this line to remove the debugger from the view
+//        enableFirebug(engine); // Comment out this line to remove the debugger from the view
 
         Scene scene = new Scene(browser, 1080, 720);
         primaryStage.setTitle(APP_TITLE);
@@ -197,8 +196,7 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                system.addHourToClock();
-                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
+                
             }
         };
         ((EventTarget) clockHourButton).addEventListener("click", listener, false);
@@ -211,8 +209,7 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                timeDisplayUpdater.toggleUse24HourFormat();
-                toggleTimeFormatButton.setTextContent(timeDisplayUpdater.getTimeFormat());
+                
             }
         };
         ((EventTarget) toggleTimeFormatButton).addEventListener("click", listener, false);
@@ -225,8 +222,7 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                system.addMinuteToClock();
-                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
+                
             }
         };
         ((EventTarget) clockMinuteButton).addEventListener("click", listener, false);

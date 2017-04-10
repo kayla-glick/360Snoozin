@@ -21,21 +21,9 @@ public class System {
     }
     
     /**
-     * Method to add 1 hour to the System's clock
-     */
-    public void addHourToClock() {
-        this.clock.addHour();
-    }
-    
-    /**
-     * Method to add 1 minute to the System's clock
-     */
-    public void addMinuteToClock() {
-        this.clock.addMinute();
-    }
-    
-    /**
      * Method to get the System's clock's time
+     * 
+     * @return The clock's time
      */
     public LocalTime getClockTime() {
         return this.clock.getTime();
