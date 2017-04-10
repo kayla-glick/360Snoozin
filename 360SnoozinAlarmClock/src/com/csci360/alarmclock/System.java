@@ -6,7 +6,7 @@
 package com.csci360.alarmclock;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.LocalTime;
 
 public class System {
     protected Clock clock;
@@ -21,62 +21,103 @@ public class System {
     }
     
     /**
-     * Method to set the Clock's time attribute
+     * Method to get the System's clock's time
      * 
-     * @param time The time to be set
+     * @return The clock's time
      */
-    public void setClockTime(String time) {  
-        this.clock.setTime(Instant.parse(time));
+    public LocalTime getClockTime() {
+        return this.clock.getTime();
     }
     
     /**
-     * Method to toggle Clock's time format
-     */
-    public void toggleTimeFormat() {
-        this.clock.setUse24HourFormat(!this.clock.getUse24HourFormat());
-    }
-    
-    /**
-     * Method to set the Alarm's time
+     * Method to add an hour to the specified Alarm's time
      * 
-     * @param time The time to set
-     * @param n  An integer representing the nth Alarm (1 or 2)
+     * @param n An integer representing the nth Alarm (1 or 2)
      */
-    public void setAlarmTime(String time, int n) {
-        this.clock.getAlarms()[n-1].setTime(Instant.parse(time));
+    public void addHourToAlarm(int n) {
+        this.clock.addHourToAlarm(n);
     }
     
     /**
-     * Method to enable an alarm
+     * Method to add a minute to the specified Alarm's time
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     */
+    public void addMinuteToAlarm(int n) {
+        this.clock.addMinuteToAlarm(n);
+    }
+    
+    /**
+     * Method to get the specified Alarm's time as a LocalDate
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     * @return The Alarm's time
+     */
+    public LocalTime getAlarmTime(int n) {
+        return this.clock.getAlarmTime(n);
+    }
+    
+    /**
+     * Method to enable the specified Alarm
      * 
      * @param n An integer representing the nth Alarm (1 or 2)
      */
     public void enableAlarm(int n) {
-        this.clock.getAlarms()[n-1].setIsActive(true);
+        this.clock.enableAlarm(n);
     }
     
     /**
-     * Method to disable an alarm
+     * Method to disable the specified Alarm
      * 
      * @param n An integer representing the nth Alarm (1 or 2)
      */
     public void disableAlarm(int n) {
-        this.clock.getAlarms()[n-1].setIsActive(false);
+        this.clock.disableAlarm(n);
     }
     
     /**
-     * Method to snooze any alarms which are currently playing
+     * Method to snooze the specified Alarm
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
      */
-    public void snoozeAlarms() {
-        Alarm[] alarms = this.clock.getAlarms();
-        
-        for ( Alarm alarm : alarms ) {
-            if ( alarm.getIsSounding() ) {
-                alarm.snooze();
-            }
-        }
+    public void snoozeAlarm(int n) {
+        this.clock.snoozeAlarm(n);
     }
     
+    /**
+     * Method to check whether or not the specified Alarm is sounding
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     * @return Whether the alarm is sounding or not
+     */
+    public boolean isAlarmSounding(int n) {
+        return this.clock.isAlarmSounding(n);
+    }
+    
+    /**
+     * Method to check whether or not any Alarms are sounding
+     * 
+     * @return Whether or not any alarms are sounding
+     */
+    public boolean anyAlarmsSounding() {
+        return this.clock.anyAlarmsSounding();
+    }
+    
+    /**
+     * Method to determine whether to sound alarms. If alarms are sounded, the radio is turned off
+     * 
+     * @return An array of integers containing the integers n representing the nth Alarm (1 or 2) or defaulting to 0
+     */
+    public int[] attemptToSoundAlarms() {
+        int[] alarmNumbersToPlay = this.clock.attemptToSoundAlarms();
+        
+        if ( this.clock.anyAlarmsSounding() ) {
+            this.turnOffRadio();
+        }
+        
+        return alarmNumbersToPlay;
+    }
+        
     /**
      * Method to play the radio
      */

@@ -5,79 +5,140 @@
  */
 package com.csci360.alarmclock;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalTime;
 
 public class Clock {
     
-    public final static ChronoUnit MINUTES = ChronoUnit.MINUTES;
-    private final static long MINUTE = 60000;
+    private final Alarm[] alarms = new Alarm[2];
     
-    private Instant time;
-    private boolean use24HourFormat;
-    private Alarm[] alarms = new Alarm[2];
-    private Timer timer;
-    private TimerTask clockTimeTask;
+    private LocalTime time;
     
     /**
      * Constructor
      */
     public Clock() {
-        this.time = Instant.now();
-        this.use24HourFormat = false;
+        this.time = this.time = LocalTime.now().withHour(0).withMinute(0);
         this.alarms[0] = new Alarm();
         this.alarms[1] = new Alarm();
-        this.timer = new Timer();
-        this.clockTimeTask = new ClockTimeTask(this);
-        
-        this.timer.scheduleAtFixedRate(clockTimeTask, 0, Clock.MINUTE);
     }
     
     /**
-     * Method that returns Clock's time attribute
+     * Method that returns the Clock's time
      * 
-     * @return Clock's time attribute
+     * @return The Clock's time attribute
      */
-    public Instant getTime(){
+    public LocalTime getTime(){
         return this.time;
     }
     
     /**
-     * Method that assigns Clock's time attribute
+     * Method that assigns the Clock's time
      * 
      * @param time The time to be set
      */
-    public void setTime(Instant time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
     
     /**
-     * Method that returns Clock's use24HourFormat attribute
+     * Method to add 1 minute to the specified Alarm's time
      * 
-     * @return Clock's use24HourFormat attibute
+     * @param n An integer representing the nth Alarm (1 or 2)
      */
-    public boolean getUse24HourFormat(){
-        return this.use24HourFormat;
-    
+    public void addHourToAlarm(int n) {
+        this.alarms[n-1].addHour();
     }
     
     /**
-     * Method that assigns Clock's use24HourFormat attribute
+     * Method to add 1 minute to the specified Alarm's time
      * 
-     * @param use24HourFormat The value to be set
+     * @param n An integer representing the nth Alarm (1 or 2)
      */
-    public void setUse24HourFormat(boolean use24HourFormat){
-        this.use24HourFormat = use24HourFormat;
+    public void addMinuteToAlarm(int n) {
+        this.alarms[n-1].addMinute();
     }
     
     /**
-     * Method that returns Clock's alarms
+     * Method to return the specified Alarm's time
      * 
-     * @return Clock's alarms
+     * @param n An integer representing the nth Alarm (1 or 2)
+     * @return The alarm's time attribute
      */
-    public Alarm[] getAlarms(){
-        return alarms;
+    public LocalTime getAlarmTime(int n) {
+        return this.alarms[n-1].getTime();
+    }
+    
+    /**
+     * Method to enable the specified Alarm
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     */
+    public void enableAlarm(int n) {
+        this.alarms[n-1].setIsActive(true);
+    }
+    
+    /**
+     * Method to disable the specified Alarm
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     */
+    public void disableAlarm(int n) {
+        this.alarms[n-1].setIsActive(false);
+    }
+    
+    /**
+     * Method to snooze the specified Alarm.
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     */
+    public void snoozeAlarm(int n) {
+        if ( alarms[n-1].getIsSounding() ) {
+            alarms[n-1].snooze(this.getTime());
+        }
+    }
+    
+    /**
+     * Method to check whether or not the specified Alarm is sounding
+     * 
+     * @param n An integer representing the nth Alarm (1 or 2)
+     * @return Whether the alarm is sounding or not
+     */
+    public boolean isAlarmSounding(int n) {
+        return this.alarms[n-1].getIsSounding();
+    }
+    
+    /**
+     * Method to check whether or not any Alarms are sounding
+     * 
+     * @return Whether or not any alarms are sounding
+     */
+    public boolean anyAlarmsSounding() {
+        boolean rtnval = false;
+        
+        for ( Alarm alarm : this.alarms ) {
+            if ( alarm.getIsSounding() ) {
+                rtnval = true;
+            }
+        }
+        
+        return rtnval;
+    }
+    
+    /**
+     * Method to determine whether to sound Alarms.
+     * 
+     * @return An array of integers containing the integers n representing the nth Alarm (1 or 2) or defaulting to 0
+     */
+    public int[] attemptToSoundAlarms() {
+        int[] alarmNumbersToPlay = new int[this.alarms.length];
+        
+        for ( int i=0; i<this.alarms.length; i++ ) {
+            if ( alarms[i].getIsActive() && alarms[i].getSnoozeTime() != null && this.getTime().getHour() == alarms[i].getSnoozeTime().getHour() && this.getTime().getMinute() == alarms[i].getSnoozeTime().getMinute() ) {
+                alarms[i].setIsSounding(true);
+                alarmNumbersToPlay[i] = i+1;
+            }
+        }
+        
+        return alarmNumbersToPlay;
     }
 }

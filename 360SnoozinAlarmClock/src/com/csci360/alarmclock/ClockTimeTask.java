@@ -5,33 +5,45 @@
  */
 package com.csci360.alarmclock;
 
-import java.time.temporal.ChronoUnit;
 import java.util.TimerTask;
 
 public class ClockTimeTask extends TimerTask{
     
-    private Clock clock;
+    private final System system;
+    private final TimeDisplayUpdater timeDisplayUpdater;
+    private final AlarmButtonUpdater alarmButtonUpdater;
+    private final RadioButtonUpdater radioButtonUpdater;
     
     /**
      * Constructor
      * 
-     * @param clock The clock to increment
+     * @param system The system object to be used to update the Clock time
+     * @param timeDisplayUpdater The time display updater to be used to update the clock time display
+     * @param alarmButtonUpdater The alarm button updater to be used to update an Alarm's hour, minute, and snooze buttons when sounding
+     * @param radioButtonUpdater The radio button updater to be used to update the radio stop/play buttons and station display when an alarm sounds
      */
-    public ClockTimeTask(Clock clock){
-        this.clock = clock;
+    public ClockTimeTask(System system, TimeDisplayUpdater timeDisplayUpdater, AlarmButtonUpdater alarmButtonUpdater, RadioButtonUpdater radioButtonUpdater) {
+        this.system = system;
+        this.timeDisplayUpdater = timeDisplayUpdater;
+        this.alarmButtonUpdater = alarmButtonUpdater;
+        this.radioButtonUpdater = radioButtonUpdater;
     }
-
-    /**
-     * Method to update Clock's time
-     */
+    
     @Override
-    public void run(){
-        clock.setTime(clock.getTime().plus(1, ChronoUnit.MINUTES));
+    /**
+     * Method to run the task. On each cycle:
+     * 1 minute is added to the clock,
+     * The clock time display is updated, and 
+     * The system attempts to sound alarms, updating corresponding
+     */
+    public void run() {
         
-        for ( Alarm alarm : clock.getAlarms() ) {
-            if ( alarm.getTime() != null && clock.getTime().equals(alarm.getTime()) ) {
-                alarm.setIsSounding(true);
-            }
+        
+        int[] alarmNumbersToPlay = this.system.attemptToSoundAlarms();
+        this.alarmButtonUpdater.updateAlarmButtonsOnSounding(alarmNumbersToPlay);
+        
+        if ( this.system.anyAlarmsSounding() && this.system.getIsRadioPlaying() ) {
+            this.radioButtonUpdater.updateRadioButtonsOnStop(this.system.getStation());
         }
     }
 }
