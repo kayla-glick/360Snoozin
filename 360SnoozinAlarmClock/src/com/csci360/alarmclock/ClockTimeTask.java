@@ -5,7 +5,6 @@
  */
 package com.csci360.alarmclock;
 
-import java.time.LocalTime;
 import java.util.TimerTask;
 
 public class ClockTimeTask extends TimerTask{
