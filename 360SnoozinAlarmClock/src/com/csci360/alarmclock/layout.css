@@ -32,6 +32,16 @@ body{
     height: 35%;
 }
 
+footer {
+    height: 5%;
+    position: relative;
+}
+
+footer #product-logo {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+}
 .no-padding {
     padding: 0;
 }

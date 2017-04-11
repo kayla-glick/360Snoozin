@@ -61,6 +61,9 @@ public class Main extends Application {
     private static Element radioStopButton;
     private static Element radioTuneUpButton;
     
+    // Footer Elements
+    private static Element productLogo;
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         getAndLoadEngine(primaryStage);
@@ -111,6 +114,8 @@ public class Main extends Application {
                 alarmButtonUpdater.addAlarm("alarm 2", alarm2HourButton, alarm2MinuteButton, alarm2SnoozeButton);
                 
                 radioButtonUpdater = new RadioButtonUpdater(radioPlayButton, radioStopButton, radioStationDisplay);
+                
+                productLogo.setTextContent(APP_TITLE);
                 
                 ClockTimeTask clockTimeTask = new ClockTimeTask(system, timeDisplayUpdater, alarmButtonUpdater, radioButtonUpdater);
         
@@ -164,6 +169,9 @@ public class Main extends Application {
         radioPlayButton = dom.getElementById("radio-play-button");
         radioStopButton = dom.getElementById("radio-stop-button");
         radioTuneUpButton = dom.getElementById("radio-tune-up-button");
+        
+        // Footer Elements
+        productLogo = dom.getElementById("product-logo");
         
     }
     
