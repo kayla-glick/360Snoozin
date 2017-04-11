@@ -97,8 +97,10 @@ public class Main extends Application {
                 setupActionListeners();
                 
                 timeDisplayUpdater = new TimeDisplayUpdater();
+                timeDisplayUpdater.add("clock", clockTimeDisplay, clockAMPMDisplay);
                 timeDisplayUpdater.add("alarm 1", alarm1TimeDisplay, alarm1AMPMDisplay);
                 timeDisplayUpdater.add("alarm 2", alarm2TimeDisplay, alarm2AMPMDisplay);
+                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
                 timeDisplayUpdater.updateTimeDisplay("alarm 1", system.getAlarmTime(1));
                 timeDisplayUpdater.updateTimeDisplay("alarm 2", system.getAlarmTime(2));
                 
@@ -194,7 +196,8 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                
+                system.addHourToClock();
+                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
             }
         };
         ((EventTarget) clockHourButton).addEventListener("click", listener, false);
@@ -207,7 +210,7 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                
+                timeDisplayUpdater.toggleUse24HourFormat();
             }
         };
         ((EventTarget) toggleTimeFormatButton).addEventListener("click", listener, false);
@@ -220,7 +223,8 @@ public class Main extends Application {
         EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event ev) {
-                
+                system.addMinuteToClock();
+                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
             }
         };
         ((EventTarget) clockMinuteButton).addEventListener("click", listener, false);
