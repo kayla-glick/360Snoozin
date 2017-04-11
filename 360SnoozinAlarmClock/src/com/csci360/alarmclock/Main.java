@@ -5,7 +5,6 @@
  */
 package com.csci360.alarmclock;
 
-import java.time.LocalTime;
 import java.util.Timer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -199,7 +198,6 @@ public class Main extends Application {
             public void handleEvent(Event ev) {
                 system.addHourToClock();
                 timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
-                
             }
         };
         ((EventTarget) clockHourButton).addEventListener("click", listener, false);
@@ -213,7 +211,6 @@ public class Main extends Application {
             @Override
             public void handleEvent(Event ev) {
                 timeDisplayUpdater.toggleUse24HourFormat();
-                
             }
         };
         ((EventTarget) toggleTimeFormatButton).addEventListener("click", listener, false);

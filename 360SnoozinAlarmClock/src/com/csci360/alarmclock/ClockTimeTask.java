@@ -38,9 +38,9 @@ public class ClockTimeTask extends TimerTask{
      * The system attempts to sound alarms, updating corresponding
      */
     public void run() {
-        
         this.system.addMinuteToClock();
         this.timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
+        
         int[] alarmNumbersToPlay = this.system.attemptToSoundAlarms();
         this.alarmButtonUpdater.updateAlarmButtonsOnSounding(alarmNumbersToPlay);
         
