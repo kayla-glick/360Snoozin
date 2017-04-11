@@ -111,10 +111,6 @@ public class System {
     public int[] attemptToSoundAlarms() {
         int[] alarmNumbersToPlay = this.clock.attemptToSoundAlarms();
         
-        if ( this.clock.anyAlarmsSounding() ) {
-            this.turnOffRadio();
-        }
-        
         return alarmNumbersToPlay;
     }
         
@@ -187,5 +183,20 @@ public class System {
      */
     public String getStation() {
       return this.radio.getStation();
+    }
+    
+    /**
+     *  Method to add minute to the clock's time
+     * 
+     */
+    public void addMinuteToClock(){
+        this.clock.addMinute();
+    }
+    
+    /**
+     * Method to add an hour to the clock's time
+     */
+    public void addHourToClock(){
+        this.clock.addHour();
     }
 }

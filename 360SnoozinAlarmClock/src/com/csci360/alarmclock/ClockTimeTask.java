@@ -5,6 +5,7 @@
  */
 package com.csci360.alarmclock;
 
+import java.time.LocalTime;
 import java.util.TimerTask;
 
 public class ClockTimeTask extends TimerTask{
@@ -38,11 +39,13 @@ public class ClockTimeTask extends TimerTask{
      */
     public void run() {
         
-        
+        this.system.addMinuteToClock();
+        this.timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
         int[] alarmNumbersToPlay = this.system.attemptToSoundAlarms();
         this.alarmButtonUpdater.updateAlarmButtonsOnSounding(alarmNumbersToPlay);
         
         if ( this.system.anyAlarmsSounding() && this.system.getIsRadioPlaying() ) {
+            this.system.turnOffRadio();
             this.radioButtonUpdater.updateRadioButtonsOnStop(this.system.getStation());
         }
     }

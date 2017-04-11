@@ -141,4 +141,19 @@ public class Clock {
         
         return alarmNumbersToPlay;
     }
+    
+    /**
+     * Method adds minute to the clock's time
+     */
+    public void addMinute(){
+        this.setTime(this.time.plusMinutes(1));
+    }
+    
+    /**
+     * Method to add an hour to the clock's time
+     */
+    public void addHour(){
+        this.setTime(this.time.plusHours(1));
+    }
 }
+
