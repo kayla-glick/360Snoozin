@@ -2,7 +2,6 @@
 /360SnoozinAlarmClock/nbproject/configs/*
 /360SnoozinAlarmClock/nbproject/genfiles.properties
 /360SnoozinAlarmClock/build/*
-/360SnoozinAlarmClock/dist/*
 
 #error log files
 *.log
