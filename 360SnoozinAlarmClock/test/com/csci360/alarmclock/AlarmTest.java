@@ -6,6 +6,7 @@
 package com.csci360.alarmclock;
 
 import java.time.Instant;
+import java.time.LocalTime;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,37 +33,54 @@ public class AlarmTest {
     @Before
     public void setUp() {
         alarm = new Alarm();
-        Instant time = Instant.parse("2000-01-01T12:30:00Z");
-        
-        alarm.setTime(time);
     }
     
     @After
     public void tearDown() {
+        java.lang.System.out.println();
         alarm = null;
     }
     
+    /**
+     * Method addHour()
+     */
+    @Test
+    public void testAddHourAddsHour() {
+        java.lang.System.out.println("--Testing addHour()");
+        java.lang.System.out.println("----Should add an hour to time");
+        alarm.addHour();
+        assertTrue(alarm.getTime().getHour() == 1 && alarm.getTime().getMinute() == 0);
+    }
+    
+    /**
+     * Method addMinute()
+     */
+    @Test
+    public void testAddMinuteAddsHour() {
+        java.lang.System.out.println("--Testing addMinute()");
+        java.lang.System.out.println("----Should add a minute to time");
+        alarm.addMinute();
+        assertTrue(alarm.getTime().getHour() == 0 && alarm.getTime().getMinute() == 1);
+    }
+   
     /**
      * Method setIsActive(boolean isActive)
      */
     @Test
     public void testSetIsActiveMaintainsSnoozeTimeIfFalse() {                
-        java.lang.System.out.println("---Testing setIsActive(boolean isActive)");
-        java.lang.System.out.println("------If isActive == false, should not reset snoozeTime");
-        alarm.snooze();
-        Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
+        java.lang.System.out.println("--Testing setIsActive(boolean isActive)");
+        java.lang.System.out.println("----Should maintain snoozeTime if isActive");
+        alarm.snooze(LocalTime.now().withHour(0).withMinute(0));
         alarm.setIsActive(false);
-        assert(alarm.getSnoozeTime().equals(snoozeTime));
+        assertTrue(alarm.getSnoozeTime().getHour() == 0 && alarm.getSnoozeTime().getMinute() == 10);
     }
     
     @Test
     public void testSetIsActiveResetsSnoozeTimeIfTrue() {  
-        java.lang.System.out.println("---Testing setIsActive(boolean isActive)");
-        java.lang.System.out.println("------If isActive == true, should reset snoozeTime");
-        alarm.snooze();
-        Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
+        java.lang.System.out.println("----If isActive == true, should reset snoozeTime");
+        alarm.snooze(LocalTime.now().withHour(0).withMinute(0));
         alarm.setIsActive(true);
-        assert(alarm.getSnoozeTime().equals(alarm.getTime()));
+        assertTrue(alarm.getSnoozeTime().getHour() == 0 && alarm.getSnoozeTime().getMinute() == 0);
     }
     
     /**
@@ -70,21 +88,18 @@ public class AlarmTest {
      */
     @Test
     public void testSnoozeIncrementsSnoozeTime() {  
-        java.lang.System.out.println("---Testing snooze()");
-        java.lang.System.out.println("------Should increment snoozeTime");
+        java.lang.System.out.println("--Testing snooze()");
+        java.lang.System.out.println("----Should increment snoozeTime");
         alarm.setIsSounding(true);
-        alarm.snooze();
-        Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
-        assertTrue(alarm.getSnoozeTime().equals(snoozeTime));
+        alarm.snooze(LocalTime.now().withHour(0).withMinute(0));
+        assertTrue(alarm.getSnoozeTime().getHour() == 0 && alarm.getSnoozeTime().getMinute() == 10);
     }
     
     @Test
     public void testSnoozeSetsIsSoundingToFalse() {
-        java.lang.System.out.println("---Testing snooze()");
-        java.lang.System.out.println("------Should set isSounding = false");
+        java.lang.System.out.println("----Should set isSounding = false");
         alarm.setIsSounding(true);
-        alarm.snooze();
-        Instant snoozeTime = alarm.getTime().plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT);
+        alarm.snooze(LocalTime.now().withHour(0).withMinute(0));
         assertFalse(alarm.getIsSounding());
     }
 }

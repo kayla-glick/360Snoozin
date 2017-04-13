@@ -36,6 +36,7 @@ public class FileRadioTest {
 
   @After
   public void tearDown() {
+    java.lang.System.out.println();
     this.fileRadioInstance.stopRadio();
     this.fileRadioInstance = null;
   }
@@ -72,10 +73,11 @@ public class FileRadioTest {
    * Should return the name of the current file.
    */
   @Test
-  public void testGetStation() {
+  public void testGetStation() throws IOException {
     java.lang.System.out.println("--Testing getStation()");
     java.lang.System.out.println("----Should return current station");
     String expectedName = "FM - Red Cat by The Piano Lady";
+    fileRadioInstance.playRadio();
     String actualName = fileRadioInstance.getStation();
     assertEquals("Expected: "+expectedName+"\nGot: "+actualName,
       expectedName, actualName);
