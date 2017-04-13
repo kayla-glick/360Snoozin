@@ -7,7 +7,6 @@ package com.csci360.alarmclock;
 
 import java.util.Timer;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 import javafx.scene.Scene;
@@ -23,8 +22,8 @@ public class Main extends Application {
     
     private static final String APP_TITLE = "360Snoozin Dual-Alarm AM/FM Clock & Radio";
     
-    private static final System system = new System();
-    private static final Timer clockTimer = new Timer();
+    private static System system = new System();
+    private static Timer clockTimer = new Timer();
     
     private static TimeDisplayUpdater timeDisplayUpdater;
     private static AlarmButtonUpdater alarmButtonUpdater;
@@ -76,10 +75,8 @@ public class Main extends Application {
      */
     // Source: http://stackoverflow.com/questions/17387981/javafx-webview-webengine-firebuglite-or-some-other-debugger
     private static void enableFirebug(final WebEngine engine) {
-        engine.documentProperty().addListener(new ChangeListener<Document>() {
-          @Override public void changed(ObservableValue<? extends Document> prop, Document oldDoc, Document newDoc) {
-            engine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
-          }
+        engine.documentProperty().addListener((ObservableValue<? extends Document> prop, Document oldDoc, Document newDoc) -> {
+            engine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}");
         });
     }
     
@@ -201,12 +198,9 @@ public class Main extends Application {
      * Method to listen on clock hour button and add 1 hour to the Clock
      */
     private static void clockHourButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                system.addHourToClock();
-                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
-            }
+        EventListener listener = (Event ev) -> {
+            system.addHourToClock();
+            timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
         };
         ((EventTarget) clockHourButton).addEventListener("click", listener, false);
     }
@@ -215,11 +209,8 @@ public class Main extends Application {
      * Method to listen on toggle time format button and toggle the time format for all time displays
      */
     private static void toggleTimeFormatButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                timeDisplayUpdater.toggleUse24HourFormat();
-            }
+        EventListener listener = (Event ev) -> {
+            timeDisplayUpdater.toggleUse24HourFormat();
         };
         ((EventTarget) toggleTimeFormatButton).addEventListener("click", listener, false);
     }
@@ -228,12 +219,9 @@ public class Main extends Application {
      * Method to listen on clock minute button and add 1 minute to the Clock
      */
     private static void clockMinuteButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                system.addMinuteToClock();
-                timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
-            }
+        EventListener listener = (Event ev) -> {
+            system.addMinuteToClock();
+            timeDisplayUpdater.updateTimeDisplay("clock", system.getClockTime());
         };
         ((EventTarget) clockMinuteButton).addEventListener("click", listener, false);
     }
@@ -242,29 +230,26 @@ public class Main extends Application {
      * Method to listen on alarm state buttons and enable / disable the alarm
      */
     private static void alarmStateButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                Element element = (Element) ev.getTarget();
-                int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
+        EventListener listener = (Event ev) -> {
+            Element element = (Element) ev.getTarget();
+            int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
+            
+            if ( element.getAttribute("data-state").equals("disabled") ) {
+                system.enableAlarm(alarmNumber);
+                element.setTextContent("Enabled");
+                element.setAttribute("class", element.getAttribute("class").replace("btn-danger", "btn-success"));
+                element.setAttribute("data-state", "enabled");
                 
-                if ( element.getAttribute("data-state").equals("disabled") ) {
-                    system.enableAlarm(alarmNumber);
-                    element.setTextContent("Enabled");
-                    element.setAttribute("class", element.getAttribute("class").replace("btn-danger", "btn-success"));
-                    element.setAttribute("data-state", "enabled");
+            }
+            else {
+                if ( system.isAlarmSounding(alarmNumber) ) {
+                    system.disableAlarm(alarmNumber);
                     
+                    alarmButtonUpdater.updateAlarmButtonsOnDisable(alarmNumber);
                 }
-                else {
-                    if ( system.isAlarmSounding(alarmNumber) ) {
-                        system.disableAlarm(alarmNumber);
-                    
-                        alarmButtonUpdater.updateAlarmButtonsOnDisable(alarmNumber);   
-                    }
-                    element.setTextContent("Disabled");
-                    element.setAttribute("class", element.getAttribute("class").replace("btn-success", "btn-danger"));
-                    element.setAttribute("data-state", "disabled");
-                }
+                element.setTextContent("Disabled");
+                element.setAttribute("class", element.getAttribute("class").replace("btn-success", "btn-danger"));
+                element.setAttribute("data-state", "disabled");
             }
         };
         ((EventTarget) alarm1StateButton).addEventListener("click", listener, false);
@@ -275,17 +260,14 @@ public class Main extends Application {
      * Method to listen on alarm hour button and add 1 hour to the specified Alarm
      */
     private static void alarmHourButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                Element element = (Element) ev.getTarget();
-                int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
-                Element timeDisplay = alarmNumber == 1 ? alarm1TimeDisplay : alarm2TimeDisplay;
-                Element amPMDisplay = alarmNumber == 1 ? alarm1AMPMDisplay : alarm2AMPMDisplay;
-                        
-                system.addHourToAlarm(alarmNumber);
-                timeDisplayUpdater.updateTimeDisplay("alarm ".concat(Integer.toString(alarmNumber)), system.getAlarmTime(alarmNumber));
-            }
+        EventListener listener = (Event ev) -> {
+            Element element = (Element) ev.getTarget();
+            int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
+            Element timeDisplay = alarmNumber == 1 ? alarm1TimeDisplay : alarm2TimeDisplay;
+            Element amPMDisplay = alarmNumber == 1 ? alarm1AMPMDisplay : alarm2AMPMDisplay;
+            
+            system.addHourToAlarm(alarmNumber);
+            timeDisplayUpdater.updateTimeDisplay("alarm ".concat(Integer.toString(alarmNumber)), system.getAlarmTime(alarmNumber));
         };
         ((EventTarget) alarm1HourButton).addEventListener("click", listener, false);
         ((EventTarget) alarm2HourButton).addEventListener("click", listener, false);
@@ -295,17 +277,14 @@ public class Main extends Application {
      * Method to listen on alarm hour button and add 1 minute to the specified Alarm
      */
     private static void alarmMinuteButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                Element element = (Element) ev.getTarget();
-                int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
-                Element timeDisplay = alarmNumber == 1 ? alarm1TimeDisplay : alarm2TimeDisplay;
-                Element amPMDisplay = alarmNumber == 1 ? alarm1AMPMDisplay : alarm2AMPMDisplay;
-                        
-                system.addMinuteToAlarm(alarmNumber);
-                timeDisplayUpdater.updateTimeDisplay("alarm ".concat(Integer.toString(alarmNumber)), system.getAlarmTime(alarmNumber));
-            }
+        EventListener listener = (Event ev) -> {
+            Element element = (Element) ev.getTarget();
+            int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
+            Element timeDisplay = alarmNumber == 1 ? alarm1TimeDisplay : alarm2TimeDisplay;
+            Element amPMDisplay = alarmNumber == 1 ? alarm1AMPMDisplay : alarm2AMPMDisplay;
+            
+            system.addMinuteToAlarm(alarmNumber);
+            timeDisplayUpdater.updateTimeDisplay("alarm ".concat(Integer.toString(alarmNumber)), system.getAlarmTime(alarmNumber));
         };
         ((EventTarget) alarm1MinuteButton).addEventListener("click", listener, false);
         ((EventTarget) alarm2MinuteButton).addEventListener("click", listener, false);
@@ -316,16 +295,13 @@ public class Main extends Application {
      * Also hides the snooze button and shows the alarm hour and minute buttons.
      */
     private static void alarmSnoozeButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {                
-                Element element = (Element) ev.getTarget();
-                int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
-                
-                system.snoozeAlarm(alarmNumber);
-                
-                alarmButtonUpdater.updateAlarmButtonsOnSnooze(alarmNumber);
-            }
+        EventListener listener = (Event ev) -> {
+            Element element = (Element) ev.getTarget();
+            int alarmNumber = Integer.parseInt(element.getAttribute("data-num"));
+            
+            system.snoozeAlarm(alarmNumber);
+            
+            alarmButtonUpdater.updateAlarmButtonsOnSnooze(alarmNumber);
         };
         ((EventTarget) alarm1SnoozeButton).addEventListener("click", listener, false);
         ((EventTarget) alarm2SnoozeButton).addEventListener("click", listener, false);
@@ -335,12 +311,9 @@ public class Main extends Application {
      * Method to listen on radio tune down button and tune radio down
      */
     private static void radioTuneDownButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                system.changeStation(-1);
-                radioStationDisplay.setTextContent(system.getStation());
-            }
+        EventListener listener = (Event ev) -> {
+            system.changeStation(-1);
+            radioStationDisplay.setTextContent(system.getStation());
         };
         ((EventTarget) radioTuneDownButton).addEventListener("click", listener, false);
     }
@@ -349,17 +322,14 @@ public class Main extends Application {
      * Method to listen on radio play button and play it / turn it off
      */
     private static void radioPlayButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                if(system.getIsRadioPlaying()) {
-                    system.turnOffRadio();
-                    radioButtonUpdater.updateRadioButtonsOnStop(system.getStation());
-                } else {
-                    if ( !system.anyAlarmsSounding() ) {
-                        system.playRadio();
-                        radioButtonUpdater.updateRadioButtonsOnPlay(system.getStation());
-                    }
+        EventListener listener = (Event ev) -> {
+            if(system.getIsRadioPlaying()) {
+                system.turnOffRadio();
+                radioButtonUpdater.updateRadioButtonsOnStop(system.getStation());
+            } else {
+                if ( !system.anyAlarmsSounding() ) {
+                    system.playRadio();
+                    radioButtonUpdater.updateRadioButtonsOnPlay(system.getStation());
                 }
             }
         };
@@ -371,12 +341,9 @@ public class Main extends Application {
      * Method to listen on radio tune up button and tune radio up
      */
     private static void radioTuneUpButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                system.changeStation(1);
-                radioStationDisplay.setTextContent(system.getStation());
-            }
+        EventListener listener = (Event ev) -> {
+            system.changeStation(1);
+            radioStationDisplay.setTextContent(system.getStation());
         };
         ((EventTarget) radioTuneUpButton).addEventListener("click", listener, false);
     }
@@ -385,18 +352,15 @@ public class Main extends Application {
      * Method to listen on radio toggle frequency button
      */
     private static void radioFrequencyButtonListener() {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event ev) {
-                system.toggleAMFM();
-                radioStationDisplay.setTextContent(system.getStation());
-                if (system.getUseAM()) {
-                  radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-info", "btn-warning"));
-                  radioFrequencyButton.setTextContent("AM");
-                } else {
-                  radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-warning", "btn-info"));
-                  radioFrequencyButton.setTextContent("FM");
-                }
+        EventListener listener = (Event ev) -> {
+            system.toggleAMFM();
+            radioStationDisplay.setTextContent(system.getStation());
+            if (system.getUseAM()) {
+                radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-info", "btn-warning"));
+                radioFrequencyButton.setTextContent("AM");
+            } else {
+                radioFrequencyButton.setAttribute("class", radioFrequencyButton.getAttribute("class").replace("btn-warning", "btn-info"));
+                radioFrequencyButton.setTextContent("FM");
             }
         };
         ((EventTarget) radioFrequencyButton).addEventListener("click", listener, false);
