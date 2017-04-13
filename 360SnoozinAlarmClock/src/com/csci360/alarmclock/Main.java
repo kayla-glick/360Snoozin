@@ -21,6 +21,10 @@ import org.w3c.dom.events.EventTarget;
 public class Main extends Application {
     
     private static final String APP_TITLE = "360Snoozin Dual-Alarm AM/FM Clock & Radio";
+    // For usability purposes, clock timer scheduled at second intervals, rather than mintues
+    // For accurate use, change 1000 to 60000 (1 S to 60 S)
+    private static final long CLOCK_INTERVAL = 1000;
+    private static final long ALARM_INTERVAL = 500;
     
     private static System system = new System();
     private static Timer clockTimer = new Timer();
@@ -115,8 +119,10 @@ public class Main extends Application {
                 productLogo.setTextContent(APP_TITLE);
                 
                 ClockTimeTask clockTimeTask = new ClockTimeTask(system, timeDisplayUpdater, alarmButtonUpdater, radioButtonUpdater);
-        
-                clockTimer.scheduleAtFixedRate(clockTimeTask, 1000, 1000);
+                PlayAlarmTask playAlarmTask = new PlayAlarmTask(system);
+                
+                clockTimer.scheduleAtFixedRate(clockTimeTask, CLOCK_INTERVAL, CLOCK_INTERVAL);
+                clockTimer.scheduleAtFixedRate(playAlarmTask, 0, ALARM_INTERVAL);
             }
         });
         engine.load(Main.class.getResource("main.html").toExternalForm());

@@ -12,11 +12,6 @@ import java.util.Timer;
 public class Alarm {
     public final static int SNOOZE_INTERVAL = 10;
     
-    private final static long ALARM_DELAY = 500;
-    private final static long ALARM_INTERVAL = 500;
-    
-    private Timer alarmTimer;
-    private PlayAlarmTask alarmTask;
     private LocalTime time;
     private LocalTime snoozeTime;
     private boolean isActive;
@@ -31,10 +26,6 @@ public class Alarm {
         this.snoozeTime = this.time;
         this.isActive = false;
         this.isSounding = false;
-        this.alarmTimer = new Timer();
-        this.alarmTask = new PlayAlarmTask(this);
-        
-        this.alarmTimer.scheduleAtFixedRate(this.alarmTask, Alarm.ALARM_DELAY, Alarm.ALARM_INTERVAL);
     }
     
     /**
