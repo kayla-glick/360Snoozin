@@ -8,6 +8,10 @@ and open the template in the editor.
     margin-top: 20px;
 }
 
+.alarm-container .alarm-header .alarm-title {
+    font-size: 3vw;
+}
+
 .alarm-container .alarm-header div,
 .alarm-container .alarm-time-container div {
     height: 100%;
