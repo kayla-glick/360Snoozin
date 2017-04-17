@@ -9,15 +9,15 @@ import java.util.TimerTask;
 
 public class PlayAlarmTask extends TimerTask {
     
-    private Alarm alarm;
+    private System system;
     
     /**
      * Constructor
      * 
      * @param alarm The alarm being played
      */
-    public PlayAlarmTask(Alarm alarm) {
-        this.alarm = alarm;
+    public PlayAlarmTask(System system) {
+        this.system = system;
     }
     
     /**
@@ -25,7 +25,7 @@ public class PlayAlarmTask extends TimerTask {
      */
     @Override
     public void run() {
-        if ( this.alarm.getIsSounding() ) {
+        if ( system.anyAlarmsSounding() ) {
             Toolkit.getDefaultToolkit().beep();
         }
     }
