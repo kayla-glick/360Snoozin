@@ -72,6 +72,12 @@ public class Main extends Application {
         getAndLoadEngine(primaryStage);
     }
     
+    @Override
+    public void stop() {
+        clockTimer.cancel();
+        system.turnOffRadio();
+    }
+    
     /**
      * Method to enable FirebugLite in the WebView for debugging
      * 
