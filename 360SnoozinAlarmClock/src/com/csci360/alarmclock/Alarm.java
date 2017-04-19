@@ -32,18 +32,14 @@ public class Alarm {
      * Method to add 1 hour to the Alarm's time
      */
     public void addHour() {
-        LocalTime newTime = this.time.plusHours(1);
-        
-        this.setTime(newTime);
+        this.setTime(this.time.plusHours(1));
     }
     
     /**
      * Method to add 1 minute to the Alarm's time
      */
     public void addMinute() {
-        LocalTime newTime = this.time.plusMinutes(1);
-        
-        this.setTime(newTime);
+        this.setTime(this.time.plusMinutes(1));
     }
     
     /**

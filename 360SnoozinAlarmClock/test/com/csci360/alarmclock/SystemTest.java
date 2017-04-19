@@ -6,6 +6,7 @@
 package com.csci360.alarmclock;
 
 import java.time.Instant;
+import java.time.LocalTime;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,42 +37,72 @@ public class SystemTest {
     
     @After
     public void tearDown() {
+        java.lang.System.out.println();
         system = null;
     }
     
     /**
-     * Method setClockTime(String time)
+     * Method addHourToClock()
      */
     @Test
-    public void testSetClockTimeSetsClockTime() {
-        java.lang.System.out.println("---Testing setClockTime(String time)");
-        java.lang.System.out.println("------Should set the clock's time");
-        String time = "2000-01-01T12:30:00Z";
-        system.setClockTime(time);
-        assertTrue(system.clock.getTime().equals(Instant.parse(time)));
+    public void testAddHourToClockAddsHour() {
+        java.lang.System.out.println("---Testing addHourToClock()");
+        java.lang.System.out.println("------Should add an hour to the clock");
+        system.addHourToClock();
+        assertTrue(system.getClockTime().getHour() == 1 && system.getClockTime().getMinute() == 0);
     }
     
     /**
-     * Method toggleTimeFormat()
+     * Method addMinuteToClock()
      */
     @Test
-    public void testToggleTimeFormatSetsClockTimeFormat() {                
-        java.lang.System.out.println("---Testing toggleTimeFormat()");
-        java.lang.System.out.println("------Should set the clock's time format");
-        system.toggleTimeFormat();
-        assertTrue(system.clock.getUse24HourFormat());
+    public void testAddMinuteToClockAddsHour() {
+        java.lang.System.out.println("---Testing addMinuteToClock()");
+        java.lang.System.out.println("------Should add an minute to the clock");
+        system.addMinuteToClock();
+        assertTrue(system.getClockTime().getHour() == 0 && system.getClockTime().getMinute() == 1);
     }
     
     /**
-     * setAlarmTime(String time, int n)
+     * Method getClockTime()
      */
     @Test
-    public void testSetAlarmTimeSetsAlarmTime() {
-        java.lang.System.out.println("---Testing setAlarmTime(String time, int n)");
-        java.lang.System.out.println("------Should set the corresponding alarm's time");
-        String time = "2000-01-01T12:30:00Z";
-        system.setAlarmTime(time, 1);
-        assertTrue(system.clock.getAlarms()[0].getTime().equals(Instant.parse(time)));
+    public void testGetClockTimeReturnsClockTime() {                
+        java.lang.System.out.println("---Testing getClockTime()");
+        java.lang.System.out.println("------Should return the clock's time");
+        assertTrue(system.getClockTime().getHour() == 0 && system.getClockTime().getMinute() == 0);
+    }
+    
+    /**
+     * Method addHourToAlarm(int n)
+     */
+    @Test
+    public void testAddHourToAlarmAddsHour() {
+        java.lang.System.out.println("---Testing addHourToAlarm(int n)");
+        java.lang.System.out.println("------Should add an hour to the alarm");
+        system.addHourToAlarm(1);
+        assertTrue(system.getAlarmTime(1).getHour() == 1 && system.getAlarmTime(1).getMinute() == 0);
+    }
+    
+    /**
+     * Method addMinuteToClock(int n)
+     */
+    @Test
+    public void testAddMinuteToAlarmAddsHour() {
+        java.lang.System.out.println("---Testing addMinuteToAlarm(int n)");
+        java.lang.System.out.println("------Should add an minute to the alarm");
+        system.addMinuteToAlarm(1);
+        assertTrue(system.getAlarmTime(1).getHour() == 0 && system.getAlarmTime(1).getMinute() == 1);
+    }
+    
+    /**
+     * Method getAlarmTime(int n)
+     */
+    @Test
+    public void testGetAlarmTimeReturnsAlarmTime() {                
+        java.lang.System.out.println("---Testing getAlarmTime(int n)");
+        java.lang.System.out.println("------Should return the alarm's time");
+        assertTrue(system.getAlarmTime(1).getHour() == 0 && system.getAlarmTime(1).getMinute() == 0);
     }
     
     /**
@@ -82,7 +113,7 @@ public class SystemTest {
         java.lang.System.out.println("---Testing enableAlarm(int n)");
         java.lang.System.out.println("------Should enable the corresponding alarm");
         system.enableAlarm(1);
-        assertTrue(system.clock.getAlarms()[0].getIsActive());
+        assertTrue(system.clock.alarms[0].getIsActive());
     }
     
     /**
@@ -94,24 +125,67 @@ public class SystemTest {
         java.lang.System.out.println("------Should disable the corresponding alarm");
         system.enableAlarm(1);
         system.disableAlarm(1);
-        assertFalse(system.clock.getAlarms()[0].getIsActive());
+        assertFalse(system.clock.alarms[0].getIsActive());
     }
     
     /**
-     * Method snoozeAlarms()
+     * Method snoozeAlarm(int n)
      */
     @Test
-    public void testSnoozeAlarmsSnoozesAlarms() {  
-        java.lang.System.out.println("---Testing snoozeAlarms()");
-        java.lang.System.out.println("------Should snooze alarms which are sounding");
-        String time = "2000-01-01T12:30:00Z";
-        Alarm alarm = system.clock.getAlarms()[0];
-        alarm.setTime(Instant.parse(time));
-        alarm.setIsSounding(true);
-        system.snoozeAlarms();
-        assertTrue(system.clock.getAlarms()[0].getSnoozeTime().equals(Instant.parse(time).plus(Alarm.SNOOZE_INTERVAL, Alarm.SNOOZE_UNIT)));
+    public void testSnoozeAlarmSnoozesAlarm() {  
+        java.lang.System.out.println("---Testing snoozeAlarm(int n)");
+        java.lang.System.out.println("------Should snooze the alarm");
+        system.clock.alarms[0].setIsSounding(true);
+        system.snoozeAlarm(1);
+        assertTrue(system.clock.alarms[0].getSnoozeTime().getHour() == 0 && system.clock.alarms[0].getSnoozeTime().getMinute() == 10);
     }
     
+    /**
+     * Method isAlarmSounding(int n)
+     */
+    @Test
+    public void testIsAlarmSoundingReturnsAttribute() {
+        java.lang.System.out.println("---Testing isAlarmSounding(int n)");
+        java.lang.System.out.println("------Should return the correct value");
+        system.clock.alarms[0].setIsSounding(true);
+        assertTrue(system.isAlarmSounding(1));
+    }
+    
+    /**
+     * Method anyAlarmsSounding()
+     */
+    @Test
+    public void testAnyAlarmsSoundingReturnsTrueIfAlarmsSounding() {
+        java.lang.System.out.println("---Testing anyAlarmsSounding()");
+        java.lang.System.out.println("------Should return true if alarms sounding");
+        system.clock.alarms[0].setIsSounding(true);
+        assertTrue(system.anyAlarmsSounding());
+    }
+    
+    @Test
+    public void testAnyAlarmsSoundingReturnsFalseIfAlarmsOff() {
+        java.lang.System.out.println("------Should return false if alarms off");
+        assertFalse(system.anyAlarmsSounding());
+    }
+    
+    /**
+     * Method attemptToSoundAlarms()
+     */
+    @Test
+    public void testAttemptToSoundAlarmsReturnsAlarmsSounding() {
+        java.lang.System.out.println("---Testing attemptToSoundAlarms()");
+        java.lang.System.out.println("------Should return the numbers of alarms that are sounding");
+        system.clock.alarms[0].setIsActive(true);
+        system.clock.alarms[0].setIsSounding(true);
+        assertTrue(system.attemptToSoundAlarms()[0] == 1);
+    }
+    
+    @Test
+    public void testAttemptToSoundAlarmsReturnsZeroIfNotSounding() {
+        java.lang.System.out.println("------Should return the numbers of alarms that are sounding");
+        assertTrue(system.attemptToSoundAlarms()[0] == 0);
+    }
+            
     /**
      * Method playRadio()
      */
