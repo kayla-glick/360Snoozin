@@ -217,6 +217,7 @@ public class Main extends Application {
     private static void toggleTimeFormatButtonListener() {
         EventListener listener = (Event ev) -> {
             timeDisplayUpdater.toggleUse24HourFormat();
+            toggleTimeFormatButton.setTextContent(timeDisplayUpdater.getTimeFormat());
         };
         ((EventTarget) toggleTimeFormatButton).addEventListener("click", listener, false);
     }

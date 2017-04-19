@@ -9,14 +9,29 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 import java.util.concurrent.TimeUnit; //only used in main
 
 public class FileRadio implements Radio {
 
-  private static final String FILE_DIRECTORY = "src"+ File.separator +"AudioFiles" + File.separator;
-  private static final File[] AM_FILES = new File(FILE_DIRECTORY + "AM" + File.separator).listFiles();
-  private static final File[] FM_FILES = new File(FILE_DIRECTORY + "FM" + File.separator).listFiles();
+  private static final String FILE_DIRECTORY = "AudioFiles" + File.separator;
+  private static final ResourceExtractor RESOURCE_EXTRACTOR = new ResourceExtractor(FileRadio.class);
+
+  private static final String[] AM_FILE_NAMES = getFileNames(FILE_DIRECTORY + "AM" + File.separator);
+  private static final String[] FM_FILE_NAMES = getFileNames(FILE_DIRECTORY + "FM" + File.separator);
+  private static final File[] AM_FILES = loadFiles(AM_FILE_NAMES);
+  private static final File[] FM_FILES = loadFiles(FM_FILE_NAMES);
 
   private int currentAMFile, currentFMFile;
   private boolean useAM;
@@ -66,8 +81,8 @@ public class FileRadio implements Radio {
   public String getStation() {
     String station = "";
     if(this.isPlaying()) {
-      String nameWithExtention = useAM ? AM_FILES[currentAMFile].getName() : FM_FILES[currentFMFile].getName();
-      station = nameWithExtention.substring(0, nameWithExtention.lastIndexOf("."));
+      String fullFileName = useAM ? AM_FILE_NAMES[currentAMFile] : FM_FILE_NAMES[currentFMFile];
+      station = fullFileName.substring(fullFileName.lastIndexOf(File.separator)+1, fullFileName.lastIndexOf("."));
     }
     return station;
   }
@@ -159,6 +174,51 @@ public class FileRadio implements Radio {
    */
   private InputStream getCurrentStream() throws IOException {
     return useAM ? new FileInputStream(AM_FILES[currentAMFile]) : new FileInputStream(FM_FILES[currentFMFile]);
+  }
+
+  /**
+   * Method to return an array of file names from the inputted directory.
+   * @param directory - directory where files are located
+   * @return an array of file names from directory
+   */
+  private static String[] getFileNames(String directory) {
+    ArrayList<String> fileNames = new ArrayList<String>();
+    try {
+      URI uri = FileRadio.class.getResource(directory).toURI();
+      try (FileSystem fileSystem = (uri.getScheme().equals("jar") ? FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap()) : null)) {
+        Path path = Paths.get(uri);
+        try ( DirectoryStream<Path> stream = Files.newDirectoryStream(path) ) {
+
+          for ( Path file : stream ) {
+            String fileName = directory + file.getName(file.getNameCount() - 1).toString();
+            fileNames.add(fileName);
+          }
+        }
+      }
+    }
+    catch ( URISyntaxException | IOException e ) {
+      java.lang.System.out.println("There was a problem: " + e);
+    }
+
+    String[] fileNamesArray = new String[fileNames.size()];
+    return fileNames.toArray(fileNamesArray);
+  }
+
+  /**
+   * Loads the audio files from the inputted array of file names and returns
+   * them as an array of Files using ResourceExtractor objects.
+   * @param fileNames - ArrayList of file names.
+   * @return an array of File objects
+   */
+  private static File[] loadFiles(String[] fileNames) {
+    File[] files = new File[fileNames.length];
+    int i = 0;
+    for (String s : fileNames) {
+      files[i] = RESOURCE_EXTRACTOR.extractResourceAsFile(s);
+      i++;
+    }
+
+    return files;
   }
 
   /**
