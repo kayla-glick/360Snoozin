@@ -100,7 +100,7 @@ public class Alarm {
             this.setSnoozeTime(this.time);
         }
         else {
-            this.setIsSounding(isActive);
+            this.setIsSounding(false);
         }
     }
     

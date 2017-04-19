@@ -256,10 +256,9 @@ public class Main extends Application {
             }
             else {
                 if ( system.isAlarmSounding(alarmNumber) ) {
-                    system.disableAlarm(alarmNumber);
-                    
                     alarmButtonUpdater.updateAlarmButtonsOnDisable(alarmNumber);
                 }
+                system.disableAlarm(alarmNumber);
                 element.setTextContent("Disabled");
                 element.setAttribute("class", element.getAttribute("class").replace("btn-success", "btn-danger"));
                 element.setAttribute("data-state", "disabled");
