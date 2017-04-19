@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 public class Clock {
     
-    private final Alarm[] alarms = new Alarm[2];
+    protected final Alarm[] alarms = new Alarm[2];
     
     private LocalTime time;
     
@@ -41,7 +41,7 @@ public class Clock {
      * 
      * @return The Clock's time attribute
      */
-    public LocalTime getTime(){
+    public LocalTime getTime() {
         return this.time;
     }
     

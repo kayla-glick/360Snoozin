@@ -36,6 +36,7 @@ public class FileRadioTest {
 
   @After
   public void tearDown() {
+    java.lang.System.out.println();
     this.fileRadioInstance.stopRadio();
     this.fileRadioInstance = null;
   }
@@ -72,10 +73,11 @@ public class FileRadioTest {
    * Should return the name of the current file.
    */
   @Test
-  public void testGetStation() {
+  public void testGetStation() throws IOException {
     java.lang.System.out.println("--Testing getStation()");
     java.lang.System.out.println("----Should return current station");
     String expectedName = "FM - Red Cat by The Piano Lady";
+    fileRadioInstance.playRadio();
     String actualName = fileRadioInstance.getStation();
     assertEquals("Expected: "+expectedName+"\nGot: "+actualName,
       expectedName, actualName);
@@ -97,52 +99,19 @@ public class FileRadioTest {
   }
 
   /**
-   * Test of toggleAMFM method, of class FileRadio.
-   * This method should reset the RadioThread is it was playing and open
-   * a new RadioThread, resulting in 2 active threads.
-   * @throws java.io.IOException
-   */
-  @Test
-  public void testToggleAMFMPlayingRadio() throws IOException {
-    java.lang.System.out.println("--Testing playRadio()");
-    java.lang.System.out.println("----Should reset and play radio if radio playing");
-    fileRadioInstance.playRadio();
-    fileRadioInstance.toggleAMFM();
-    int expectedThreads = 2;
-    int actualNumThreads = java.lang.Thread.activeCount();
-    assertEquals(expectedThreads, actualNumThreads);
-  }
-
-    /**
-   * Test of toggleAMFM method, of class FileRadio.
-   * This method should reset the RadioThread is it was playing and open
-   * a new RadioThread, resulting in 2 active threads.
-   * @throws java.io.IOException
-   */
-  @Test
-  public void testToggleAMFMNoRadio() throws IOException {
-    java.lang.System.out.println("--Testing playRadio()");
-    java.lang.System.out.println("----Should reset but not play radio if radio off");
-    fileRadioInstance.toggleAMFM();
-    int expectedThreads = 1;
-    int actualNumThreads = java.lang.Thread.activeCount();
-    assertEquals(expectedThreads, actualNumThreads);
-  }
-
-  /**
    * Test of tune method, of class FileRadio.
    * tune() should reset and play a playing RadioThread.
    * @throws java.io.IOException
    */
   @Test
-  public void testTunePlayingRadio() throws IOException {
+  public void testTuneChangesStation() throws IOException {
     java.lang.System.out.println("--Testing tune(int direction)");
-    java.lang.System.out.println("----Should reset and play radio if radio playing");
+    java.lang.System.out.println("----Should change the station if the radio is playing");
     fileRadioInstance.playRadio();
+    String oldStation = fileRadioInstance.getStation();
     fileRadioInstance.tune(1);
-    int expectedThreads = 2;
-    int actualNumThreads = java.lang.Thread.activeCount();
-    assertEquals(expectedThreads, actualNumThreads);
+    String newStation = fileRadioInstance.getStation();
+    assertNotEquals(oldStation, newStation);
   }
 
   /**
@@ -153,11 +122,11 @@ public class FileRadioTest {
   @Test
   public void testTuneNoRadio() throws IOException {
     java.lang.System.out.println("--Testing tune(int direction)");
-    java.lang.System.out.println("----Should reset but not play radio if radio off");
+    java.lang.System.out.println("----Should not change the station if the radio is off");
+    String oldStation = fileRadioInstance.getStation();
     fileRadioInstance.tune(1);
-    int expectedThreads = 1;
-    int actualNumThreads = java.lang.Thread.activeCount();
-    assertEquals(expectedThreads, actualNumThreads);
+    String newStation = fileRadioInstance.getStation();
+    assertEquals(oldStation, newStation);
   }
 
   /**
@@ -171,7 +140,10 @@ public class FileRadioTest {
   public void testTuneLessThan0() throws IOException {
     java.lang.System.out.println("--Testing tune(int direction)");
     java.lang.System.out.println("----Should do nothing if index < 0");
+    String oldStation = fileRadioInstance.getStation();
     fileRadioInstance.tune(-10000000);
+    String newStation = fileRadioInstance.getStation();
+    assertEquals(oldStation, newStation);
   }
 
   /**
@@ -185,6 +157,9 @@ public class FileRadioTest {
   public void testTuneGreaterThanLength() throws IOException {
     java.lang.System.out.println("--Testing tune(int direction)");
     java.lang.System.out.println("----Should do nothing if index > length");
+    String oldStation = fileRadioInstance.getStation();
     fileRadioInstance.tune(10000000);
+    String newStation = fileRadioInstance.getStation();
+    assertEquals(oldStation, newStation);
   }
 }

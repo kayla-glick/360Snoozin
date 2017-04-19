@@ -13,12 +13,12 @@ and open the template in the editor.
     height: 100%;
 }
 
-.alarm-container .alarm-header h1 {
-    margin: 0px;
+.alarm-container .alarm-header .alarm-title {
+    font-size: 3vw;
 }
 
 .alarm-container .alarm-header hr {
-    margin-top: 20px;
+    margin-top: 40%;
     border-top-width: 2px;
     border-color: black;
 }
