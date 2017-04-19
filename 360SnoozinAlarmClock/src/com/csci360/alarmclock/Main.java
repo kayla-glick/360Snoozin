@@ -5,6 +5,7 @@
  */
 package com.csci360.alarmclock;
 
+import java.io.File;
 import java.util.Timer;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -131,7 +132,7 @@ public class Main extends Application {
                 clockTimer.scheduleAtFixedRate(playAlarmTask, 0, ALARM_INTERVAL);
             }
         });
-        engine.load(Main.class.getResource("main.html").toExternalForm());
+        engine.load(Main.class.getResource("resources" + File.separator + "main.html").toExternalForm());
 //        enableFirebug(engine); // Comment out this line to remove the debugger from the view
 
         Scene scene = new Scene(browser, 1080, 720);
