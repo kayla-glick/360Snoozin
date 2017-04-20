@@ -1,17 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.csci360.alarmclock;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class RadioThread extends Thread {
   
-  private InputStream station;
+  private File station;
   private Player player;
   private boolean isPlaying;
   
@@ -19,7 +17,7 @@ public class RadioThread extends Thread {
    * Constructor for RadioThread objects.
    * @param station - InputStream object to play
    */
-  public RadioThread(InputStream station) {
+  public RadioThread(File station) {
     this.isPlaying = false;
     this.station = station;
   }
@@ -42,11 +40,12 @@ public class RadioThread extends Thread {
   public void run() {
     try {
       while(this.isPlaying) {
-        this.player = new Player(this.station);
+        InputStream stationStream = new FileInputStream(this.station);
+        this.player = new Player(stationStream);
         this.player.play();
       }
-    } catch (JavaLayerException ex) {
-      java.lang.System.out.println("Unable to play file.");
+    } catch (IOException | JavaLayerException ex) {
+      java.lang.System.out.println("Unable to play file. " + ex);
     }
   }
 

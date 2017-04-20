@@ -172,8 +172,8 @@ public class FileRadio implements Radio {
    * @return InputStream
    * @throws java.io.IOException - There was a problem loading the InputStream from a File.
    */
-  private InputStream getCurrentStream() throws IOException {
-    return useAM ? new FileInputStream(AM_FILES[currentAMFile]) : new FileInputStream(FM_FILES[currentFMFile]);
+  private File getCurrentStream() throws IOException {
+    return useAM ? AM_FILES[currentAMFile] : FM_FILES[currentFMFile];
   }
 
   /**
