@@ -2,7 +2,7 @@
 
 ### About Us
 Developers:
-* Kyle Glick (B.S. Computer Science, College of Charleston)
+* Kayla Glick (B.S. Computer Science, College of Charleston)
 * Sam Word (B.S. Computer Science, College of Charleston)
 * Gifford Waltz (B.A. Computing in the Arts, Music Focus, College of Charleston)
 
